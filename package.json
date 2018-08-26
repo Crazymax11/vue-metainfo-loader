@@ -1,0 +1,31 @@
+{
+  "name": "vue-metainfo-loader",
+  "version": "1.0.0",
+  "description": "Extracts meta info about component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Crazymax11/vue-metainfo-loader.git"
+  },
+  "keywords": [
+    "vue",
+    "jsdoc"
+  ],
+  "author": "msosnov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Crazymax11/vue-metainfo-loader/issues"
+  },
+  "homepage": "https://github.com/Crazymax11/vue-metainfo-loader#readme",
+  "dependencies": {
+    "@babel/parser": "^7.0.0-rc.3",
+    "babel-traverse": "^6.26.0",
+    "doctrine": "^2.1.0"
+  },
+  "devDependencies": {
+    "jest": "^23.5.0"
+  }
+}
