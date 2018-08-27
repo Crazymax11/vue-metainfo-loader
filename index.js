@@ -21,7 +21,6 @@ function parseComponentCode(code) {
 
     // result
     const component = {
-        events: {},
         props: {},
     };
     traverse(ast, {
@@ -36,29 +35,7 @@ function parseComponentCode(code) {
                     );
 
                     component.description = comments.description;
-
-                    const re = /(\w+)\s(\{.*\})?(.*)/;
-                    comments.tags.filter(tag => tag.title === 'emits').forEach(tag => {
-                        const match = tag.description.match(re);
-                        if (!match) {
-                            return;
-                        }
-                        const [, name, type, description] = match;
-
-                        component.events[name] = {}
-                        const event = {
-                            name: match[1],
-                            description: match[3].trim(),
-                        };
-
-                        if (match[2]) {
-                            component.events[name].type = match[2].slice(1, -1);
-                        }
-
-                        if (event.description.trim()) {
-                            component.events[name].description = event.description.trim();
-                        }
-                    });
+                    component.tags = comments.tags;
                 }
             }
 
@@ -72,6 +49,7 @@ function parseComponentCode(code) {
 
     props.forEach(prop => {
         const propDescr = {
+            tags: []
         };
         component.props[prop.key.name] = propDescr;
 
@@ -92,6 +70,7 @@ function parseComponentCode(code) {
                 unwrap: true,
             });
             propDescr.description = description;
+            propDescr.tags = tags;
         }
     });
 

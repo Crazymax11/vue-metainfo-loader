@@ -6,27 +6,44 @@ describe('parseComponentCode', () => {
         const code = fs.readFileSync('./testFiles/component.vue').toString();
         expect(parseComponentCode(code)).toEqual({
             description: 'Test',
-            events: {
-                'clicked':{
-                    description: "when component is clicked"
+            "tags": [
+                {
+                "description": "clicked when component is clicked",
+                "title": "emits",
                 },
-                statusChanged: {
-                    type: 'boolean'
+                {
+                    "description": "changed",
+                    "title": "emits",
+                    },
+                {
+                    "description": "statusChanged {boolean}",
+                    "title": "emits",
+                    },
+                {
+                    "description": "anotherStatusChanged {boolean} value is a new status",
+                    "title": "emits",
                 },
-                anotherStatusChanged: {
-                    description: 'value is a new status',
-                    type: 'boolean'
-                }
-            },
+            ],
             props: {
                 sample: {
                     description: 'Just a prop',
                     required: true,
-                    type: 'Array'
+                    type: 'Array',
+                    tags: []
                 },
                 short: {
                     description: 'Short prop',
-                    type: 'Array'
+                    type: 'Array',
+                    tags: [
+                        {
+                            description: '[]',
+                            title: 'example'
+                        },
+                        {
+                            description: '123',
+                            title: 'customTag'
+                        }
+                    ]
                 }
             },
 
@@ -37,20 +54,22 @@ describe('parseComponentCode', () => {
         const code = fs.readFileSync('./testFiles/multipleCommentsBeforeProps.vue').toString();
         expect(parseComponentCode(code)).toEqual({
             description: 'kek',
-            events: {},
+            tags: [],
             props: {
                 'first': {
                     description: 'lol',
-                    
-                    type: 'Array'
+                    type: 'Array',
+                    tags: []
                 },
                 'second':{
                     description: 'Just a prop',
                 
-                    type: 'Array'
+                    type: 'Array',
+                    tags: []
                 },
                 'propWithoutComment': {
-                    type: 'Number'
+                    type: 'Number',
+                    tags: []
                 }
             }
 
@@ -60,7 +79,6 @@ describe('parseComponentCode', () => {
     it('should output minimal info for empry component', () => {
         const code = fs.readFileSync('./testFiles/emptyComponent.vue').toString();
         expect(parseComponentCode(code)).toEqual({
-            events: {},
             props: {}
         });
     })
@@ -68,12 +86,15 @@ describe('parseComponentCode', () => {
     it('should output info for component without docs', () => {
         const code = fs.readFileSync('./testFiles/componentWithoutDocs.vue').toString();
         expect(parseComponentCode(code)).toEqual({
-            events: {},
             props: 
-                {'sample': {
-                required: true,
-                type: 'Array'
-            }}
-        });
+                {
+                    'sample': {
+                        required: true,
+                        tags: [],
+                        type: 'Array'
+                    }
+                }
+            }
+        );
     })
 })
