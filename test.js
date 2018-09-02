@@ -26,12 +26,14 @@ describe('parseComponentCode', () => {
             ],
             props: {
                 sample: {
+                    name: 'sample',
                     description: 'Just a prop',
                     required: true,
                     type: 'Array',
                     tags: []
                 },
                 short: {
+                    name: 'short',
                     description: 'Short prop',
                     type: 'Array',
                     tags: [
@@ -57,19 +59,21 @@ describe('parseComponentCode', () => {
             tags: [],
             props: {
                 'first': {
+                    name: 'first',
                     description: 'lol',
                     type: 'Array',
                     tags: []
                 },
                 'second':{
                     description: 'Just a prop',
-                
+                    name: 'second',
                     type: 'Array',
                     tags: []
                 },
                 'propWithoutComment': {
                     type: 'Number',
-                    tags: []
+                    tags: [],
+                    name: 'propWithoutComment'
                 }
             }
 
@@ -89,6 +93,7 @@ describe('parseComponentCode', () => {
             props: 
                 {
                     'sample': {
+                        name: 'sample',
                         required: true,
                         tags: [],
                         type: 'Array'
@@ -96,5 +101,33 @@ describe('parseComponentCode', () => {
                 }
             }
         );
+    })
+
+    it('should parse <docs> tag', () => {
+        const code = fs.readFileSync('./testFiles/componentWithDocsTag.vue').toString();
+        expect(parseComponentCode(code)).toEqual({
+            description: 'Component with docs tag',
+            docs: `<h1>Component with docs tag</h1>
+<h2>h2</h2>
+<h3>h3</h3>
+<h4>h4</h4>
+<h5>h5</h5>
+<h6>h6</h6>
+<ul>
+<li>list-item-1</li>
+<li>list-item-2
+<ul>
+<li>list-item-2-1</li>
+</ul>
+</li>
+</ul>
+<p><strong>This text is bold</strong>
+<em>This text is italic</em></p>
+<pre><code class=\"js\">code block
+</code></pre>
+`,
+            props: {},
+            tags: []
+        });
     })
 })

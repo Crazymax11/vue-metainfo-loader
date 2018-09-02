@@ -23,7 +23,8 @@
   "dependencies": {
     "@babel/parser": "^7.0.0-rc.3",
     "babel-traverse": "^6.26.0",
-    "doctrine": "^2.1.0"
+    "doctrine": "^2.1.0",
+    "markdown-it": "^8.4.2"
   },
   "devDependencies": {
     "jest": "^23.5.0"

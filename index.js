@@ -4,7 +4,57 @@ const traverse = require('babel-traverse').default;
 const doctrine = require('doctrine');
 const parser = require('@babel/parser');
 
+const MarkdownIt = require('markdown-it');
+md = new MarkdownIt({
+    langPrefix: ''
+});
+
+
+/**
+ * Parse SFC code and return meta info about component
+ * 
+ * @param {string} code
+ * @returns {Object} metaInfo
+ */
 function parseComponentCode(code) {
+    const docs = extractDocs(code);
+
+    const jsMetaInfo = extractJsMetaInfo(code);
+
+    if (docs) {
+        return {
+            docs,
+            ...jsMetaInfo
+        }
+    }
+
+    return jsMetaInfo;
+}
+
+/**
+ * Return html built from markdown written in <docs> tag
+ * If no <docs> tag found return undefined
+ *
+ * @param {string} code 
+ * @returns {string?} docs
+ */
+function extractDocs(code) {
+    if (!code.includes('<docs>') || !code.includes('</docs>')) {
+        return undefined;
+    }
+
+    const docsStart = code.indexOf('<docs>') + '<docs>'.length;
+    const docsEnd = code.indexOf('</docs>');
+
+    return md.render(code.slice(docsStart, docsEnd));
+}
+
+/**
+ * Extract metainfo from script tag
+ * @param {string} code
+ * @returns {Object} metaInfo
+ */
+function extractJsMetaInfo(code) {
     // works only with JS for now
     const start = code.indexOf('<script>') + '<script>'.length;
     const end = code.indexOf('</script>');
@@ -17,14 +67,14 @@ function parseComponentCode(code) {
         plugins: ['dynamicImport', 'objectRestSpread'],
     });
 
-    const props = [];
-
     // result
     const component = {
         props: {},
     };
+
     traverse(ast, {
         enter(path) {
+            // extract default exports's JSDoc
             if (path.isExportDefaultDeclaration()) {
                 if (path.node.leadingComments) {
                     const comments = doctrine.parse(
@@ -39,42 +89,56 @@ function parseComponentCode(code) {
                 }
             }
 
+            // store props AST nodes
             if (path.isIdentifier({ name: 'props' })) {
-                path.container.value.properties.forEach(node => {
-                    props.push(node);
+                path.container.value.properties.forEach(prop => {
+                    const info = extractPropInfo(prop);
+                    component.props[info.name] = info;
                 });
             }
         },
     });
 
-    props.forEach(prop => {
-        const propDescr = {
-            tags: []
-        };
-        component.props[prop.key.name] = propDescr;
-
-        if (prop.value.properties) {
-            prop.value.properties.forEach(prop => {
-                if (prop.key.name === 'validator') {
-                    return;
-                }
-                propDescr[prop.key.name] = prop.value.name || prop.value.value;
-            });
-        // if has no properties, it should be a short notation!
-        } else if (prop.value.type === 'Identifier') {
-            propDescr.type = prop.value.name;
-        }
-
-        if (prop.leadingComments) {
-            const { description, tags } = doctrine.parse(prop.leadingComments[prop.leadingComments.length - 1].value, {
-                unwrap: true,
-            });
-            propDescr.description = description;
-            propDescr.tags = tags;
-        }
-    });
-
     return component;
+}
+
+/**
+ * Extract property description from babel AST node
+ * 
+ * @param {ASTNode} node
+ * @returns {Object} propertyDescription
+ */
+function extractPropInfo(node) {
+    const propertyDescription = {
+        tags: [],
+        name: node.key.name
+    };
+
+    if (node.value.properties) {
+        node.value.properties.forEach(node => {
+
+            if (node.key.name === 'validator') {
+                propertyDescription['hasValidator'] = true;
+                return;
+            }
+
+            propertyDescription[node.key.name] = node.value.name || node.value.value;
+        });
+
+    // if has no properties, it should be a short notation!
+    } else if (node.value.type === 'Identifier') {
+        propertyDescription.type = node.value.name;
+    }
+
+    if (node.leadingComments) {
+        const { description, tags } = doctrine.parse(node.leadingComments[node.leadingComments.length - 1].value, {
+            unwrap: true,
+        });
+        propertyDescription.description = description;
+        propertyDescription.tags = tags;
+    }
+
+    return propertyDescription;
 }
 
 module.exports = function loader(code) {
