@@ -15,7 +15,8 @@ const {
     events, // events are emitted in SFC
     tags, // JSDoc tags described before default export
     props, // props definitions consist of JSDoc and JS prop declaration
-    description // JSDoc description
+    description, // JSDoc description
+    docs // <docs> tag content rendered in html
 } = meta;
 
 props.forEach(prop => {
