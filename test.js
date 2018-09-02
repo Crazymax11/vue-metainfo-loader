@@ -5,6 +5,7 @@ describe('parseComponentCode', () => {
     it('should parse ideal file', () => {
         const code = fs.readFileSync('./testFiles/component.vue').toString();
         expect(parseComponentCode(code)).toEqual({
+            events: [],
             description: 'Test',
             "tags": [
                 {
@@ -57,6 +58,7 @@ describe('parseComponentCode', () => {
         expect(parseComponentCode(code)).toEqual({
             description: 'kek',
             tags: [],
+            events: [],
             props: {
                 'first': {
                     name: 'first',
@@ -83,6 +85,7 @@ describe('parseComponentCode', () => {
     it('should output minimal info for empry component', () => {
         const code = fs.readFileSync('./testFiles/emptyComponent.vue').toString();
         expect(parseComponentCode(code)).toEqual({
+            events: [],
             props: {}
         });
     })
@@ -90,6 +93,7 @@ describe('parseComponentCode', () => {
     it('should output info for component without docs', () => {
         const code = fs.readFileSync('./testFiles/componentWithoutDocs.vue').toString();
         expect(parseComponentCode(code)).toEqual({
+            events: [],
             props: 
                 {
                     'sample': {
@@ -106,6 +110,7 @@ describe('parseComponentCode', () => {
     it('should parse <docs> tag', () => {
         const code = fs.readFileSync('./testFiles/componentWithDocsTag.vue').toString();
         expect(parseComponentCode(code)).toEqual({
+            events: [],
             description: 'Component with docs tag',
             docs: `<h1>Component with docs tag</h1>
 <h2>h2</h2>
@@ -128,6 +133,23 @@ describe('parseComponentCode', () => {
 `,
             props: {},
             tags: []
+        });
+    })
+
+    it('should extract events from <template> tag', () => {
+        const code = fs.readFileSync('./testFiles/events.vue').toString();
+        expect(parseComponentCode(code)).toEqual({
+            description: 'TestEvents',
+            events: [
+                "$emitInHtml",
+                "$emitInHtmlWithArg",
+                "$emitInPug",
+                "$emitInPugWithArg",
+                "$emitInJs",
+                "$emitInJsWithArg"
+            ],
+            tags: [],
+            props: {}
         });
     })
 })

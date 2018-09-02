@@ -19,16 +19,22 @@ md = new MarkdownIt({
 function parseComponentCode(code) {
     const docs = extractDocs(code);
 
+    const events = extractEvents(code);
+
     const jsMetaInfo = extractJsMetaInfo(code);
 
     if (docs) {
         return {
             docs,
-            ...jsMetaInfo
+            ...jsMetaInfo,
+            events
         }
     }
 
-    return jsMetaInfo;
+    return {
+        ...jsMetaInfo,
+        events
+    };
 }
 
 /**
@@ -139,6 +145,24 @@ function extractPropInfo(node) {
     }
 
     return propertyDescription;
+}
+
+/**
+ * Extracts events from SFC code
+ * 
+ * @param {string} code
+ * @returns {Array<String>} events
+ */
+function extractEvents(code) {
+    const re = /\$emit\(['"](.*)['"].*\)/g;
+
+    let match = undefined;
+    const events = [];
+
+    while(match = re.exec(code)) {
+        events.push(match[1]);
+    }
+    return events;
 }
 
 module.exports = function loader(code) {
