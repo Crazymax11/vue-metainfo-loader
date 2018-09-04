@@ -154,7 +154,7 @@ function extractPropInfo(node) {
  * @returns {Array<String>} events
  */
 function extractEvents(code) {
-    const re = /\$emit\(['"](.*)['"].*\)/g;
+    const re = /\$emit\(['"]([^'"]*).*\)/g;
 
     let match = undefined;
     const events = [];

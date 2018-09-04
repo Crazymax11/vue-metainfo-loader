@@ -136,7 +136,7 @@ describe('parseComponentCode', () => {
         });
     })
 
-    it('should extract events from <template> tag', () => {
+    it('should extract events', () => {
         const code = fs.readFileSync('./testFiles/events.vue').toString();
         expect(parseComponentCode(code)).toEqual({
             description: 'TestEvents',
@@ -149,6 +149,16 @@ describe('parseComponentCode', () => {
                 "$emitInJsWithArg"
             ],
             tags: [],
+            props: {}
+        });
+    })
+
+    it('should extract event names from emits, where argument is a string', () => {
+        const code = fs.readFileSync('./testFiles/eventWithStringArgument.vue').toString();
+        expect(parseComponentCode(code)).toEqual({
+            events: [
+                'updateFieldValue'
+            ],
             props: {}
         });
     })
