@@ -162,4 +162,25 @@ describe('parseComponentCode', () => {
             props: {}
         });
     })
+
+    it('should parse props which have default value computed by function', () => {
+        const code = fs.readFileSync('./testFiles/componentWithDefaultFunctionProps.vue').toString();
+        expect(parseComponentCode(code)).toEqual({
+            events: [],
+            props: {
+                first: {
+                    type: 'Number',
+                    default: 'function',
+                    name: 'first',
+                    tags: []
+                },
+                second: {
+                    type: 'Number',
+                    default: 'function',
+                    name: 'second',
+                    tags: []
+                }
+            }
+        });
+    })
 })

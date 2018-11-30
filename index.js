@@ -128,6 +128,13 @@ function extractPropInfo(node) {
                 return;
             }
 
+            if (node.key.name === 'default' && (node.kind === 'method' || node.value.type === 'FunctionExpression')) {
+                // this is defailt() written as method
+
+                propertyDescription[node.key.name] = 'function'
+                return;
+            }
+
             propertyDescription[node.key.name] = node.value.name || node.value.value;
         });
 
