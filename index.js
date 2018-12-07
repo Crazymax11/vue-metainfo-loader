@@ -83,15 +83,14 @@ function extractJsMetaInfo(code) {
             // extract default exports's JSDoc
             if (path.isExportDefaultDeclaration()) {
                 if (path.node.leadingComments) {
-                    const comments = doctrine.parse(
-                        path.node.leadingComments[path.node.leadingComments.length - 1].value,
-                        {
-                            unwrap: true,
-                        },
+                    const comments = path.node.leadingComments.map(({ value }) =>
+                        doctrine.parse(value, {unwrap: true})
                     );
+                    const lastComment = comments[comments.length - 1];
 
-                    component.description = comments.description;
-                    component.tags = comments.tags;
+                    component.description = lastComment.description;
+                    component.tags = lastComment.tags;
+                    component.comments = comments;
                 }
             }
 

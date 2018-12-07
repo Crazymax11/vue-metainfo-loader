@@ -7,23 +7,46 @@ describe('parseComponentCode', () => {
         expect(parseComponentCode(code)).toEqual({
             events: [],
             description: 'Test',
-            "tags": [
+            tags: [
                 {
-                "description": "clicked when component is clicked",
-                "title": "emits",
+                    description: 'clicked when component is clicked',
+                    title: 'emits'
                 },
                 {
-                    "description": "changed",
-                    "title": "emits",
-                    },
-                {
-                    "description": "statusChanged {boolean}",
-                    "title": "emits",
-                    },
-                {
-                    "description": "anotherStatusChanged {boolean} value is a new status",
-                    "title": "emits",
+                    description: 'changed',
+                    title: 'emits'
                 },
+                {
+                    description: 'statusChanged {boolean}',
+                    title: 'emits'
+                },
+                {
+                    description: 'anotherStatusChanged {boolean} value is a new status',
+                    title: 'emits'
+                }
+            ],
+            comments: [
+                {
+                    description: 'Test',
+                    tags: [
+                        {
+                            description: 'clicked when component is clicked',
+                            title: 'emits'
+                        },
+                        {
+                            description: 'changed',
+                            title: 'emits'
+                        },
+                        {
+                            description: 'statusChanged {boolean}',
+                            title: 'emits'
+                        },
+                        {
+                            description: 'anotherStatusChanged {boolean} value is a new status',
+                            title: 'emits'
+                        }
+                    ]
+                }
             ],
             props: {
                 sample: {
@@ -58,21 +81,35 @@ describe('parseComponentCode', () => {
         expect(parseComponentCode(code)).toEqual({
             description: 'kek',
             tags: [],
+            comments: [
+                {
+                    description: 'lol',
+                    tags: []
+                },
+                {
+                    description: 'Test',
+                    tags: []
+                },
+                {
+                    description: 'kek',
+                    tags: []
+                }
+            ],
             events: [],
             props: {
-                'first': {
+                first: {
                     name: 'first',
                     description: 'lol',
                     type: 'Array',
                     tags: []
                 },
-                'second':{
+                second:{
                     description: 'Just a prop',
                     name: 'second',
                     type: 'Array',
                     tags: []
                 },
-                'propWithoutComment': {
+                propWithoutComment: {
                     type: 'Number',
                     tags: [],
                     name: 'propWithoutComment'
@@ -132,7 +169,13 @@ describe('parseComponentCode', () => {
 </code></pre>
 `,
             props: {},
-            tags: []
+            tags: [],
+            comments: [
+                {
+                    description: 'Component with docs tag',
+                    tags: []
+                }
+            ]
         });
     })
 
@@ -149,7 +192,95 @@ describe('parseComponentCode', () => {
                 "$emitInJsWithArg"
             ],
             tags: [],
-            props: {}
+            props: {},
+            comments: [
+                {
+                    description: 'TestEvents',
+                    tags: []
+                }
+            ]
+        });
+    })
+
+    it('should parse all component comments', () => {
+        const code = fs.readFileSync('./testFiles/componentsWithMultipleComments.vue').toString();
+        expect(parseComponentCode(code)).toEqual({
+            props: {
+                superProp: {
+                    tags: [
+                        {
+                            description: null,
+                            title: 'type',
+                            type: {
+                                type: 'NameExpression',
+                                name: 'Prop'
+                            }
+                        }
+                    ],
+                    name: 'superProp',
+                    type: 'Object',
+                    description: 'Typed Prop'
+                }
+            },
+            description: 'Awesome component',
+            tags: [
+                {
+                    title: 'emits',
+                    description: 'change'
+                }
+            ],
+            comments: [
+                {
+                    description: '',
+                    tags: [
+                        {
+                            title: 'event',
+                            description: 'ChangeEvent'
+                        },
+                        {
+                            title: 'type',
+                            description: 'new value',
+                            type: {
+                                type: 'NameExpression',
+                                name: 'string'
+                            }
+                        }
+                    ]
+                },
+                {
+                    description: '',
+                    tags: [
+                        {
+                            title: 'typedef',
+                            description: null,
+                            type: {
+                                type: 'RecordType',
+                                fields: [
+                                    {
+                                        type: 'FieldType',
+                                        key: 'test',
+                                        value: {
+                                            type: 'NameExpression',
+                                            name: 'string'
+                                        }
+                                    }
+                                ]
+                            },
+                            name: 'Prop'
+                        }
+                    ]
+                },
+                {
+                    description: 'Awesome component',
+                    tags: [
+                        {
+                            title: 'emits',
+                            description: 'change'
+                        }
+                    ]
+                }
+            ],
+            events: []
         });
     })
 
