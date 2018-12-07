@@ -16,12 +16,13 @@ const {
     tags, // JSDoc tags described before default export
     props, // props definitions consist of JSDoc and JS prop declaration
     description, // JSDoc description
+    comments, // All comments described before default export
     docs // <docs> tag content rendered in html
 } = meta;
 
 props.forEach(prop => {
     prop.tags; // JSDoc tags described before prop declaration
-    prop.description; //JSDoc description
+    prop.description; // JSDoc description
     prop.type; // prop type from JS
     prop.hasValidator; // true if property has validator
     prop.required; // is property required
