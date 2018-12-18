@@ -9,20 +9,40 @@ describe('parseComponentCode', () => {
             description: 'Test',
             tags: [
                 {
-                    description: 'clicked when component is clicked',
+                    name: 'clicked',
+                    description: 'when component is clicked',
                     title: 'emits'
                 },
                 {
-                    description: 'changed',
+                    name: 'changed',
+                    description: '',
                     title: 'emits'
                 },
                 {
-                    description: 'statusChanged {boolean}',
-                    title: 'emits'
+                    name: 'statusChanged',
+                    description: '',
+                    title: 'emits',
+                    type: {
+                        type: 'RecordType',
+                        fields: [{
+                            key: 'boolean',
+                            type: 'FieldType',
+                            value: null
+                        }]
+                    }
                 },
                 {
-                    description: 'anotherStatusChanged {boolean} value is a new status',
-                    title: 'emits'
+                    name: 'anotherStatusChanged',
+                    description: 'value is a new status',
+                    title: 'emits',
+                    type: {
+                        type: 'RecordType',
+                        fields: [{
+                            key: 'boolean',
+                            type: 'FieldType',
+                            value: null
+                        }]
+                    }
                 }
             ],
             comments: [
@@ -30,20 +50,40 @@ describe('parseComponentCode', () => {
                     description: 'Test',
                     tags: [
                         {
-                            description: 'clicked when component is clicked',
+                            name: 'clicked',
+                            description: 'when component is clicked',
                             title: 'emits'
                         },
                         {
-                            description: 'changed',
+                            name: 'changed',
+                            description: '',
                             title: 'emits'
                         },
                         {
-                            description: 'statusChanged {boolean}',
-                            title: 'emits'
+                            name: 'statusChanged',
+                            description: '',
+                            title: 'emits',
+                            type: {
+                                type: 'RecordType',
+                                fields: [{
+                                    key: 'boolean',
+                                    type: 'FieldType',
+                                    value: null
+                                }]
+                            }
                         },
                         {
-                            description: 'anotherStatusChanged {boolean} value is a new status',
-                            title: 'emits'
+                            name: 'anotherStatusChanged',
+                            description: 'value is a new status',
+                            title: 'emits',
+                            type: {
+                                type: 'RecordType',
+                                fields: [{
+                                    key: 'boolean',
+                                    type: 'FieldType',
+                                    value: null
+                                }]
+                            }
                         }
                     ]
                 }
@@ -131,7 +171,7 @@ describe('parseComponentCode', () => {
         const code = fs.readFileSync('./testFiles/componentWithoutDocs.vue').toString();
         expect(parseComponentCode(code)).toEqual({
             events: [],
-            props: 
+            props:
                 {
                     'sample': {
                         name: 'sample',
@@ -225,8 +265,9 @@ describe('parseComponentCode', () => {
             description: 'Awesome component',
             tags: [
                 {
+                    name: 'change',
                     title: 'emits',
-                    description: 'change'
+                    description: ''
                 }
             ],
             comments: [
@@ -274,8 +315,9 @@ describe('parseComponentCode', () => {
                     description: 'Awesome component',
                     tags: [
                         {
+                            name: 'change',
                             title: 'emits',
-                            description: 'change'
+                            description: ''
                         }
                     ]
                 }
@@ -313,5 +355,96 @@ describe('parseComponentCode', () => {
                 }
             }
         });
+    })
+
+    it('should parse event types from emits and fires tags', () => {
+        const code = fs.readFileSync('./testFiles/eventsWithTypes.vue').toString();
+        expect(parseComponentCode(code).comments).toEqual([
+           {
+               description: 'Comment without events',
+               tags: []
+           },
+           {
+               description: '',
+               tags: [
+                   {
+                       title: 'event',
+                       description: 'ChangeEvent'
+                   },
+                   {
+                       title: 'type',
+                       description: 'new value',
+                       type: {
+                           type: 'NameExpression',
+                           name: 'string'
+                       }
+                   }
+               ]
+           },
+           {
+               description: '',
+               tags: [
+                   {
+                       title: 'emits',
+                       description: '',
+                       name: 'hello',
+                       type: {
+                           type: 'RecordType',
+                           fields: [
+                               {
+                                   type: 'FieldType',
+                                   key: 'number',
+                                   value: null
+                               }
+                           ]
+                       }
+                   },
+                   {
+                       title: 'emits',
+                       description: 'comment',
+                       name: 'change',
+                       type: {
+                           type: 'RecordType',
+                           fields: [
+                               {
+                                   type: 'FieldType',
+                                   key: 'ChangeEvent',
+                                   value: null
+                               }
+                           ]
+                       }
+                   },
+                   {
+                       title: 'emits',
+                       description: 'comment',
+                       name: 'set',
+                       type: {
+                           type: 'RecordType',
+                           fields: [
+                               {
+                                   type: 'FieldType',
+                                   key: 'string',
+                                   value: null
+                               }
+                           ]
+                       }
+                   },
+                   {
+                       title: 'fires',
+                       description: 'comment',
+                       name: 'update'
+                   },
+                   {
+                       title: 'fires',
+                       description: '',
+                       name: 'delete'
+                   },
+                   {
+                       title: 'fires',
+                       description: null
+                   }
+               ]
+           }
+       ]);
     })
 })
