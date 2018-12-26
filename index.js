@@ -9,10 +9,24 @@ md = new MarkdownIt({
     langPrefix: ''
 });
 
+/**
+ * @typedef {{
+ *      title: string,
+ *      description: string
+ * }} EmitsTag
+ *
+ * @typedef {{
+ *      title: string,
+ *      description: string,
+ *      type?: Object,
+ *      name: string
+ * }} PreparedEmitsTag
+ */
+
 
 /**
  * Parse SFC code and return meta info about component
- * 
+ *
  * @param {string} code
  * @returns {Object} metaInfo
  */
@@ -41,8 +55,8 @@ function parseComponentCode(code) {
  * Return html built from markdown written in <docs> tag
  * If no <docs> tag found return undefined
  *
- * @param {string} code 
- * @returns {string?} docs
+ * @param {string} code
+ * @returns {?string} docs
  */
 function extractDocs(code) {
     if (!code.includes('<docs>') || !code.includes('</docs>')) {
@@ -83,9 +97,7 @@ function extractJsMetaInfo(code) {
             // extract default exports's JSDoc
             if (path.isExportDefaultDeclaration()) {
                 if (path.node.leadingComments) {
-                    const comments = path.node.leadingComments.map(({ value }) =>
-                        doctrine.parse(value, {unwrap: true})
-                    );
+                    const comments = path.node.leadingComments.map(({ value }) => parseComment(value));
                     const lastComment = comments[comments.length - 1];
 
                     component.description = lastComment.description;
@@ -109,7 +121,7 @@ function extractJsMetaInfo(code) {
 
 /**
  * Extract property description from babel AST node
- * 
+ *
  * @param {ASTNode} node
  * @returns {Object} propertyDescription
  */
@@ -143,9 +155,8 @@ function extractPropInfo(node) {
     }
 
     if (node.leadingComments) {
-        const { description, tags } = doctrine.parse(node.leadingComments[node.leadingComments.length - 1].value, {
-            unwrap: true,
-        });
+        const lastComment = node.leadingComments[node.leadingComments.length - 1].value;
+        const { description, tags } = parseComment(lastComment);
         propertyDescription.description = description;
         propertyDescription.tags = tags;
     }
@@ -155,7 +166,7 @@ function extractPropInfo(node) {
 
 /**
  * Extracts events from SFC code
- * 
+ *
  * @param {string} code
  * @returns {Array<String>} events
  */
@@ -169,6 +180,50 @@ function extractEvents(code) {
         events.push(match[1]);
     }
     return events;
+}
+
+/**
+ * Parse comment and return doctrine AST
+ * with enriched emits and fires tags
+ *
+ * @param {string} value
+ * @returns {{ description: string, tags: Object[] }}
+ */
+function parseComment(value) {
+    const comment = doctrine.parse(value, { unwrap: true });
+    comment.tags = comment.tags.map(tag => {
+        return ['emits', 'fires'].indexOf(tag.title) > -1 ? enrichEmitsTag(tag) : tag;
+    });
+    return comment;
+}
+
+/**
+ * Parse and enrich emits or fires tag
+ *
+ * @param {EmitsTag} tag
+ * @returns {EmitsTag | PreparedEmitsTag}
+ */
+function enrichEmitsTag(tag) {
+    if (!tag.description) {
+        return tag;
+    }
+
+    const reg = /(\w+)(\s+(\{.*\}))?(\s+-?\s?(.*))?/;
+    const result = tag.description.match(reg);
+    const name = result[1] || '';
+    const typeString = result[3] || '';
+    const description = result[5] || '';
+    const preparedTag = {
+        ...tag,
+        name: name.trim(),
+        description: description.trim(),
+    };
+
+    if (typeString) {
+        preparedTag.type = doctrine.parseType(typeString);
+    }
+
+    return preparedTag;
 }
 
 module.exports = function loader(code) {

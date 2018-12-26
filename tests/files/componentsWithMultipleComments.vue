@@ -1,7 +1,7 @@
 <script>
 /**
  * @event ChangeEvent
- * @type {string} - new value
+ * @type {string} new value
  */
 
 /**
