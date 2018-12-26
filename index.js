@@ -191,8 +191,14 @@ function extractEvents(code) {
  */
 function parseComment(value) {
     const comment = doctrine.parse(value, { unwrap: true });
+
+    /**
+     * according to JSDoc fire tag
+     * @see http://usejsdoc.org/tags-fires.html
+     */
+    const eventsJSdocTags = ['emits', 'fires'];
     comment.tags = comment.tags.map(tag => {
-        return ['emits', 'fires'].indexOf(tag.title) > -1 ? enrichEmitsTag(tag) : tag;
+        return eventsJSdocTags.includes(tag.title) ? enrichEmitsTag(tag) : tag;
     });
     return comment;
 }
@@ -208,11 +214,10 @@ function enrichEmitsTag(tag) {
         return tag;
     }
 
-    const reg = /(\w+)(\s+(\{.*\}))?(\s+-?\s?(.*))?/;
-    const result = tag.description.match(reg);
-    const name = result[1] || '';
-    const typeString = result[3] || '';
-    const description = result[5] || '';
+    // trying to parse description, which is like change {ChangeEvent} - comment
+    const reg = /(\w+)\s*(\{.*\})?[\s-]*(.*)?/;
+    const [, name = '', typeString = '', description = ''] = tag.description.match(reg);
+
     const preparedTag = {
         ...tag,
         name: name.trim(),
