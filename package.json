@@ -4,7 +4,8 @@
   "description": "Extracts meta info about component",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
