@@ -31,26 +31,40 @@ jobs:
           paths: .
   publish:
     <<: *defaults
-    filters:
-      tags:
-        only: /^v\d+\.\d+\.\d+/
     steps:
       - checkout
       - run:
-        name: Save npm credentionals
-        command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+          name: Save npm credentionals
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
       - run:
-        name: Publish package
-        command: npm publish
+          name: Publish package
+          command: npm publish
   publish-beta:
     <<: *defaults
-    filters:
-      tags:
-        only: /^v\d+\.\d+\.\d+-.*/
     steps:
       - checkout
       - run: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
       - run: npm publish --tag beta
 
 
+workflows:
+  version: 2
+  publish:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /^v.*/
+      - publish:
+          requires:
+            - test
+          filters:
+          tags:
+            only: /^v\d+\.\d+\.\d+$/
+      - publish-beta:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+-.*/
 
