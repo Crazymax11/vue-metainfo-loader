@@ -1,6 +1,6 @@
 {
   "name": "vue-metainfo-loader",
-  "version": "1.5.0-ci.3",
+  "version": "1.5.0-ci.4",
   "description": "Extracts meta info about component",
   "main": "index.js",
   "scripts": {
