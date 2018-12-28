@@ -59,8 +59,8 @@ workflows:
           requires:
             - test
           filters:
-          tags:
-            only: /^v\d+\.\d+\.\d+$/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
       - publish-beta:
           requires:
             - test
