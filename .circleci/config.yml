@@ -43,32 +43,38 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
-      - run: npm publish --tag beta
+      - run:
+          name: Save npm credentionals
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Publish beta package
+          command: npm publish --tag beta
 
 
 workflows:
   version: 2
-  publish:
+  test-publish:
     jobs:
       - test:
           filters:
             tags:
-              only: /^v.*/
+              only: /^v.*/ # test on any version tag
+            branches:
+              ignore: /.*/ # ignore all commits which are not tags
       - publish:
           requires:
             - test
           filters:
             tags:
-              only: /^v\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/ # only v1.2.3 tags
             branches:
-              ignore: /.*/
+              ignore: /.*/ # ignore all commits which are not tags
       - publish-beta:
           requires:
             - test
           filters:
             tags:
-              only: /^v\d+\.\d+\.\d+-.*/
+              only: /^v\d+\.\d+\.\d+-.*/ # only v1.2.3-.* tags
             branches:
-              ignore: /.*/
+              ignore: /.*/ # ignore all commits which are not tags
 
