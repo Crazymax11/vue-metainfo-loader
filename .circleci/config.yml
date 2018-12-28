@@ -61,10 +61,14 @@ workflows:
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/
       - publish-beta:
           requires:
             - test
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+-.*/
+            branches:
+              ignore: /.*/
 
