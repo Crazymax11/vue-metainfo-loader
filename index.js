@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+const _ = require('lodash');
 const traverse = require('babel-traverse').default;
 
 const doctrine = require('doctrine');
@@ -30,50 +32,46 @@ const md = new MarkdownIt({
  * @returns {Object} metaInfo
  */
 function parseComponentCode(code) {
-  const docs = extractDocs(code);
-
-  const events = extractEvents(code);
-
-  const jsMetaInfo = extractJsMetaInfo(code);
-
-  if (docs) {
-    return {
-      docs,
-      ...jsMetaInfo,
-      events,
-    };
-  }
-
-  return {
-    ...jsMetaInfo,
-    events,
+  const meta = {
+    events: {},
+    props: {},
   };
+
+  extractDocs(meta, code);
+
+  extractEvents(meta, code);
+
+  extractJsMetaInfo(meta, code);
+  return meta;
 }
 
 /**
  * Return html built from markdown written in <docs> tag
  * If no <docs> tag found return undefined
  *
+ * @param {Object} meta
  * @param {string} code
- * @returns {?string} docs
+ * @returns {Object} meta
  */
-function extractDocs(code) {
+function extractDocs(meta, code) {
   if (!code.includes('<docs>') || !code.includes('</docs>')) {
-    return undefined;
+    return meta;
   }
 
   const docsStart = code.indexOf('<docs>') + '<docs>'.length;
   const docsEnd = code.indexOf('</docs>');
 
-  return md.render(code.slice(docsStart, docsEnd));
+  meta.docs = md.render(code.slice(docsStart, docsEnd));
+  return meta;
 }
 
 /**
  * Extract metainfo from script tag
+ * @param {Object} meta
  * @param {string} code
- * @returns {Object} metaInfo
+ * @returns {Object} meta
  */
-function extractJsMetaInfo(code) {
+function extractJsMetaInfo(meta, code) {
   // works only with JS for now
   const start = code.indexOf('<script>') + '<script>'.length;
   const end = code.indexOf('</script>');
@@ -87,11 +85,6 @@ function extractJsMetaInfo(code) {
     plugins: ['dynamicImport', 'objectRestSpread'],
   });
 
-  // result
-  const component = {
-    props: {},
-  };
-
   traverse(ast, {
     enter(path) {
       // extract default exports's JSDoc
@@ -102,9 +95,21 @@ function extractJsMetaInfo(code) {
           );
           const lastComment = comments[comments.length - 1];
 
-          component.description = lastComment.description;
-          component.tags = lastComment.tags;
-          component.comments = comments;
+          meta.description = lastComment.description;
+          meta.tags = lastComment.tags;
+          meta.comments = comments;
+
+          /**
+           * according to JSDoc fire tag
+           * @see http://usejsdoc.org/tags-fires.html
+           */
+          const eventsJSdocTags = ['emits', 'fires'];
+
+          lastComment.tags
+            .filter(tag => eventsJSdocTags.includes(tag.title) && tag.name)
+            .forEach(tag => {
+              meta.events[tag.name] = _.pick(tag, ['payload', 'description']);
+            });
         }
       }
 
@@ -112,13 +117,13 @@ function extractJsMetaInfo(code) {
       if (path.isIdentifier({ name: 'props' })) {
         path.container.value.properties.forEach(prop => {
           const info = extractPropInfo(prop);
-          component.props[info.name] = info;
+          _.set(meta, `props.${info.name}`, info);
         });
       }
     },
   });
 
-  return component;
+  return meta;
 }
 
 /**
@@ -173,20 +178,20 @@ function extractPropInfo(node) {
 /**
  * Extracts events from SFC code
  *
+ * @param {Object} meta
  * @param {string} code
- * @returns {Array<String>} events
+ * @returns {Object} meta
  */
-function extractEvents(code) {
+function extractEvents(meta, code) {
   const re = /\$emit\(['"]([^'"]*).*/g;
 
   let match;
-  const events = {};
 
   // eslint-disable-next-line
   while (match = re.exec(code)) {
-    events[match[1]] = {};
+    _.set(meta, `events.${[match[1]]}`, {});
   }
-  return events;
+  return meta;
 }
 
 /**
@@ -198,15 +203,18 @@ function extractEvents(code) {
  */
 function parseComment(value) {
   const comment = doctrine.parse(value, { unwrap: true });
-
-  /**
-   * according to JSDoc fire tag
-   * @see http://usejsdoc.org/tags-fires.html
-   */
-  const eventsJSdocTags = ['emits', 'fires'];
-  comment.tags = comment.tags.map(tag =>
-    eventsJSdocTags.includes(tag.title) ? enrichEmitsTag(tag) : tag,
-  );
+  comment.tags = comment.tags.map(tag => {
+    switch (tag.title) {
+      case 'emits':
+      case 'fires':
+        return handleJsDocEventTag(tag);
+      case 'type':
+      case 'typedef':
+        return handleJsDocTypeTag(tag);
+      default:
+        return tag;
+    }
+  });
   return comment;
 }
 
@@ -216,13 +224,13 @@ function parseComment(value) {
  * @param {EmitsTag} tag
  * @returns {EmitsTag | PreparedEmitsTag}
  */
-function enrichEmitsTag(tag) {
+function handleJsDocEventTag(tag) {
   if (!tag.description) {
     return tag;
   }
 
   // trying to parse description, which is like change {ChangeEvent} - comment
-  const reg = /(\w+)\s*(\{.*\})?[\s-]*(.*)?/;
+  const reg = /(\w+)\s*(?:\{(.*)\})?\s*(.*)?/;
   const [
     ,
     name = '',
@@ -230,17 +238,37 @@ function enrichEmitsTag(tag) {
     description = '',
   ] = tag.description.match(reg);
 
-  const preparedTag = {
-    ...tag,
-    name: name.trim(),
-    description: description.trim(),
-  };
-
-  if (typeString) {
-    preparedTag.type = doctrine.parseType(typeString);
+  if (!name) {
+    return tag;
   }
 
-  return preparedTag;
+  tag.description = description.trim();
+
+  if (!tag.description) {
+    delete tag.description;
+  }
+  if (typeString) {
+    tag.payload = typeString;
+  }
+
+  tag.name = name;
+  return tag;
+}
+
+function handleJsDocTypeTag(tag) {
+  if (tag.type.type === 'NameExpression') {
+    tag.type = tag.type.name;
+  }
+
+  if (tag.type.type === 'RecordType') {
+    tag.type = tag.type.fields.reduce((acc, field) => {
+      if (field.value.type === 'NameExpression') {
+        acc[field.key] = field.value.name;
+      }
+      return acc;
+    }, {});
+  }
+  return tag;
 }
 
 module.exports = function loader(code) {

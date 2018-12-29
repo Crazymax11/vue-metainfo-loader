@@ -1,5 +1,17 @@
 module.exports = {
-  events: {},
+  events: {
+    clicked: {
+      description: 'when component is clicked',
+    },
+    changed: {},
+    statusChanged: {
+      payload: 'boolean',
+    },
+    anotherStatusChanged: {
+      payload: 'boolean',
+      description: 'value is a new status',
+    },
+  },
   description: 'Test',
   tags: [
     {
@@ -9,38 +21,18 @@ module.exports = {
     },
     {
       name: 'changed',
-      description: '',
       title: 'emits',
     },
     {
       name: 'statusChanged',
-      description: '',
       title: 'emits',
-      type: {
-        type: 'RecordType',
-        fields: [
-          {
-            key: 'boolean',
-            type: 'FieldType',
-            value: null,
-          },
-        ],
-      },
+      payload: 'boolean',
     },
     {
       name: 'anotherStatusChanged',
       description: 'value is a new status',
       title: 'emits',
-      type: {
-        type: 'RecordType',
-        fields: [
-          {
-            key: 'boolean',
-            type: 'FieldType',
-            value: null,
-          },
-        ],
-      },
+      payload: 'boolean',
     },
   ],
   comments: [
@@ -54,38 +46,18 @@ module.exports = {
         },
         {
           name: 'changed',
-          description: '',
           title: 'emits',
         },
         {
           name: 'statusChanged',
-          description: '',
           title: 'emits',
-          type: {
-            type: 'RecordType',
-            fields: [
-              {
-                key: 'boolean',
-                type: 'FieldType',
-                value: null,
-              },
-            ],
-          },
+          payload: 'boolean',
         },
         {
           name: 'anotherStatusChanged',
           description: 'value is a new status',
           title: 'emits',
-          type: {
-            type: 'RecordType',
-            fields: [
-              {
-                key: 'boolean',
-                type: 'FieldType',
-                value: null,
-              },
-            ],
-          },
+          payload: 'boolean',
         },
       ],
     },

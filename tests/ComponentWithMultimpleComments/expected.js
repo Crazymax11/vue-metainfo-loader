@@ -5,10 +5,7 @@ module.exports = {
         {
           description: null,
           title: 'type',
-          type: {
-            type: 'NameExpression',
-            name: 'Prop',
-          },
+          type: 'Prop',
         },
       ],
       name: 'superProp',
@@ -21,7 +18,6 @@ module.exports = {
     {
       name: 'change',
       title: 'emits',
-      description: '',
     },
   ],
   comments: [
@@ -35,10 +31,7 @@ module.exports = {
         {
           title: 'type',
           description: 'new value',
-          type: {
-            type: 'NameExpression',
-            name: 'string',
-          },
+          type: 'string',
         },
       ],
     },
@@ -49,17 +42,7 @@ module.exports = {
           title: 'typedef',
           description: null,
           type: {
-            type: 'RecordType',
-            fields: [
-              {
-                type: 'FieldType',
-                key: 'test',
-                value: {
-                  type: 'NameExpression',
-                  name: 'string',
-                },
-              },
-            ],
+            test: 'string',
           },
           name: 'Prop',
         },
@@ -71,10 +54,9 @@ module.exports = {
         {
           name: 'change',
           title: 'emits',
-          description: '',
         },
       ],
     },
   ],
-  events: {},
+  events: { change: {} },
 };

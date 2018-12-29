@@ -8,7 +8,7 @@ module.exports = {
         {
           description: 'new value',
           title: 'type',
-          type: { name: 'string', type: 'NameExpression' },
+          type: 'string',
         },
       ],
     },
@@ -16,71 +16,62 @@ module.exports = {
       description: '',
       tags: [
         {
-          description: '',
           name: 'hello',
           title: 'emits',
-          type: {
-            fields: [{ key: 'number', type: 'FieldType', value: null }],
-            type: 'RecordType',
-          },
+          payload: 'number',
         },
         {
-          description: 'comment',
+          description: '- comment',
           name: 'change',
           title: 'emits',
-          type: {
-            fields: [{ key: 'ChangeEvent', type: 'FieldType', value: null }],
-            type: 'RecordType',
-          },
+          payload: 'ChangeEvent',
         },
         {
           description: 'comment',
           name: 'set',
           title: 'emits',
-          type: {
-            fields: [{ key: 'string', type: 'FieldType', value: null }],
-            type: 'RecordType',
-          },
+          payload: 'string',
         },
         { description: 'comment', name: 'update', title: 'fires' },
-        { description: '', name: 'delete', title: 'fires' },
+        { name: 'delete', title: 'fires' },
         { description: null, title: 'fires' },
       ],
     },
   ],
   description: '',
-  events: {},
+  events: {
+    hello: {
+      payload: 'number',
+    },
+    change: {
+      payload: 'ChangeEvent',
+      description: '- comment',
+    },
+    set: { payload: 'string', description: 'comment' },
+    update: { description: 'comment' },
+    delete: {},
+  },
   props: {},
   tags: [
     {
-      description: '',
       name: 'hello',
       title: 'emits',
-      type: {
-        fields: [{ key: 'number', type: 'FieldType', value: null }],
-        type: 'RecordType',
-      },
+      payload: 'number',
     },
     {
-      description: 'comment',
+      description: '- comment',
       name: 'change',
       title: 'emits',
-      type: {
-        fields: [{ key: 'ChangeEvent', type: 'FieldType', value: null }],
-        type: 'RecordType',
-      },
+      payload: 'ChangeEvent',
     },
     {
       description: 'comment',
       name: 'set',
       title: 'emits',
-      type: {
-        fields: [{ key: 'string', type: 'FieldType', value: null }],
-        type: 'RecordType',
-      },
+      payload: 'string',
     },
     { description: 'comment', name: 'update', title: 'fires' },
-    { description: '', name: 'delete', title: 'fires' },
+    { name: 'delete', title: 'fires' },
     { description: null, title: 'fires' },
   ],
 };

@@ -37,6 +37,7 @@
     "@babel/parser": "^7.0.0-rc.3",
     "babel-traverse": "^6.26.0",
     "doctrine": "^2.1.0",
+    "lodash": "^4.17.11",
     "markdown-it": "^8.4.2"
   },
   "devDependencies": {
