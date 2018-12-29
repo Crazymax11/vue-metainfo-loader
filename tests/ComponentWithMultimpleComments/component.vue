@@ -15,14 +15,14 @@
  * @emits change
  */
 export default {
-    props: {
-        /**
-         * Typed Prop
-         * @type {Prop}
-         */
-        superProp: {
-            type: Object,
-        },
-    }
-}
+  props: {
+    /**
+     * Typed Prop
+     * @type {Prop}
+     */
+    superProp: {
+      type: Object,
+    },
+  },
+};
 </script>

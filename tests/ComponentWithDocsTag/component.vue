@@ -21,11 +21,11 @@ code block
 
 </docs>
 <template>
+  <div />
 </template>
 <script>
 /**
  * Component with docs tag
  */
-export default {
-}
+export default {};
 </script>
