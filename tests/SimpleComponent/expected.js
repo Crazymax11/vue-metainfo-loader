@@ -1,5 +1,5 @@
 module.exports = {
-  events: [],
+  events: {},
   description: 'Test',
   tags: [
     {

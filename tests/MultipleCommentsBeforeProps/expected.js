@@ -15,7 +15,7 @@ module.exports = {
       tags: [],
     },
   ],
-  events: [],
+  events: {},
   props: {
     first: {
       name: 'first',

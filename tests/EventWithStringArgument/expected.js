@@ -1,4 +1,4 @@
 module.exports = {
-  events: ['updateFieldValue'],
+  events: { updateFieldValue: {} },
   props: {},
 };

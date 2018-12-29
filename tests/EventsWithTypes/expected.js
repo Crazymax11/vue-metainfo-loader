@@ -49,7 +49,7 @@ module.exports = {
     },
   ],
   description: '',
-  events: [],
+  events: {},
   props: {},
   tags: [
     {

@@ -180,11 +180,11 @@ function extractEvents(code) {
   const re = /\$emit\(['"]([^'"]*).*/g;
 
   let match;
-  const events = [];
+  const events = {};
 
   // eslint-disable-next-line
   while (match = re.exec(code)) {
-    events.push(match[1]);
+    events[match[1]] = {};
   }
   return events;
 }

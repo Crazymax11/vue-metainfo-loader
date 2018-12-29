@@ -1,13 +1,13 @@
 module.exports = {
   description: 'TestEvents',
-  events: [
-    '$emitInHtml',
-    '$emitInHtmlWithArg',
-    '$emitInPug',
-    '$emitInPugWithArg',
-    '$emitInJs',
-    '$emitInJsWithArg',
-  ],
+  events: {
+    $emitInHtml: {},
+    $emitInHtmlWithArg: {},
+    $emitInPug: {},
+    $emitInPugWithArg: {},
+    $emitInJs: {},
+    $emitInJsWithArg: {},
+  },
   tags: [],
   props: {},
   comments: [

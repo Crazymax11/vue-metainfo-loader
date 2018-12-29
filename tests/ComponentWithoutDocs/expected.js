@@ -1,5 +1,5 @@
 module.exports = {
-  events: [],
+  events: {},
   props: {
     sample: {
       name: 'sample',

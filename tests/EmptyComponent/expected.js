@@ -1,4 +1,4 @@
 module.exports = {
-  events: [],
+  events: {},
   props: {},
 };
