@@ -220,7 +220,16 @@ function parseComment(value) {
 }
 
 /**
- * Parse and enrich emits or fires tag.
+ * Parse emits and fires JSDoc tags. Extracts payload from event description
+ * Example: @fires eventname {string} description
+ *
+ * parsed into
+ *
+ * {
+ *  description: 'description',
+ *  name: 'eventname',
+ *  payload: 'string'
+ * }
  *
  * @param {Object} tag - JSDocTag.
  * @returns {Object} JSDocTag with payload.
@@ -256,6 +265,32 @@ function handleJsDocEventTag(tag) {
   return tag;
 }
 
+/**
+ * Prepare type and typedef JSDoc tags. It tries to collapse doctrine AST to human-readable text.
+ * Examples:
+ * type: { name: 'string', type: 'NameExpression' }, => type: 'string'
+ *
+ * type: {
+ *  type: 'RecordType',
+ *  fields: [
+ *      {
+ *          type: 'FieldType',
+ *          key: 'test',
+ *          value: {
+ *              type: 'NameExpression',
+ *              name: 'string',
+ *          },
+ *      },
+ *  ],
+ * },
+ * turns into
+ * type: {
+ *   test: 'string'
+ * }
+ *
+ * @param {Object} tag
+ * @returns {Object} tag
+ */
 function handleJsDocTypeTag(tag) {
   if (tag.type.type === 'NameExpression') {
     tag.type = tag.type.name;
