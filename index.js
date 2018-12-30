@@ -94,6 +94,16 @@ function extractJsMetaInfo(meta, code) {
           const comments = path.node.leadingComments.map(({ value }) =>
             parseComment(value),
           );
+
+          // store all typedefs in custom types
+          // TODO: process multiline typedef
+          // TODO: process @type only if first tag and other tags are properties
+          _.flatMap(comments, comment => comment.tags)
+            .filter(tag => _.includes(['typedef'], tag.title))
+            .forEach(tag => {
+              _.set(meta, `customTypes.${tag.name}`, tag.type);
+            });
+
           const lastComment = comments[comments.length - 1];
 
           meta.description = lastComment.description;

@@ -57,4 +57,7 @@ module.exports = {
     },
   ],
   events: { change: {} },
+  customTypes: {
+    Prop: '{test: string}',
+  },
 };
