@@ -257,6 +257,7 @@ function handleJsDocEventTag(tag) {
   if (!tag.description) {
     delete tag.description;
   }
+
   if (typeString) {
     tag.payload = typeString;
   }

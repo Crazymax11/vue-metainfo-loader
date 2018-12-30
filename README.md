@@ -1,5 +1,7 @@
 # vue-metainfo-loader
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 This loader extracts from SFC:
 * JSDoc about component
 * JSDoc and definition of props
