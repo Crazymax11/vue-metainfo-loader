@@ -26,10 +26,10 @@ const md = new MarkdownIt({
  */
 
 /**
- * Parse SFC code and return meta info about component
+ * Parse SFC code and return meta info about component.
  *
  * @param {string} code
- * @returns {Object} metaInfo
+ * @returns {Object} MetaInfo.
  */
 function parseComponentCode(code) {
   const meta = {
@@ -47,7 +47,7 @@ function parseComponentCode(code) {
 
 /**
  * Return html built from markdown written in <docs> tag
- * If no <docs> tag found return undefined
+ * If no <docs> tag found return undefined.
  *
  * @param {Object} meta
  * @param {string} code
@@ -66,7 +66,8 @@ function extractDocs(meta, code) {
 }
 
 /**
- * Extract metainfo from script tag
+ * Extract metainfo from script tag.
+ *
  * @param {Object} meta
  * @param {string} code
  * @returns {Object} meta
@@ -127,10 +128,10 @@ function extractJsMetaInfo(meta, code) {
 }
 
 /**
- * Extract property description from babel AST node
+ * Extract property description from babel AST node.
  *
- * @param {ASTNode} node
- * @returns {Object} propertyDescription
+ * @param {Object} node - babel AST node
+ * @returns {Object} PropertyDescription.
  */
 function extractPropInfo(node) {
   const propertyDescription = {
@@ -176,7 +177,7 @@ function extractPropInfo(node) {
 }
 
 /**
- * Extracts events from SFC code
+ * Extracts events from SFC code.
  *
  * @param {Object} meta
  * @param {string} code
@@ -196,7 +197,7 @@ function extractEvents(meta, code) {
 
 /**
  * Parse comment and return doctrine AST
- * with enriched emits and fires tags
+ * with enriched emits and fires tags.
  *
  * @param {string} value
  * @returns {{ description: string, tags: Object[] }}
@@ -219,10 +220,10 @@ function parseComment(value) {
 }
 
 /**
- * Parse and enrich emits or fires tag
+ * Parse and enrich emits or fires tag.
  *
- * @param {EmitsTag} tag
- * @returns {EmitsTag | PreparedEmitsTag}
+ * @param {Object} tag - JSDocTag.
+ * @returns {Object} JSDocTag with payload.
  */
 function handleJsDocEventTag(tag) {
   if (!tag.description) {
