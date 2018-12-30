@@ -293,18 +293,10 @@ function handleJsDocEventTag(tag) {
  * @returns {Object} tag
  */
 function handleJsDocTypeTag(tag) {
-  if (tag.type.type === 'NameExpression') {
-    tag.type = tag.type.name;
-  }
+  // undocumented, but exported public method
+  // @see https://github.com/eslint/doctrine/blob/master/lib/doctrine.js#L895
+  tag.type = doctrine.type.stringify(tag.type);
 
-  if (tag.type.type === 'RecordType') {
-    tag.type = tag.type.fields.reduce((acc, field) => {
-      if (field.value.type === 'NameExpression') {
-        acc[field.key] = field.value.name;
-      }
-      return acc;
-    }, {});
-  }
   return tag;
 }
 

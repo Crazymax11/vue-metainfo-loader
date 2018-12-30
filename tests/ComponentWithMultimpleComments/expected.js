@@ -41,9 +41,7 @@ module.exports = {
         {
           title: 'typedef',
           description: null,
-          type: {
-            test: 'string',
-          },
+          type: '{test: string}',
           name: 'Prop',
         },
       ],
