@@ -19,7 +19,8 @@ const {
     props, // props definitions consist of JSDoc and JS prop declaration
     description, // JSDoc description
     comments, // All comments described before default export
-    docs // <docs> tag content rendered in html
+    docs, // <docs> tag content rendered in html,
+    customTypes, // defined @typedef in JSDoc comments
 } = meta;
 
 props.forEach(prop => {
@@ -32,3 +33,24 @@ props.forEach(prop => {
 })
 ```
 
+
+## Custom JSDoc types
+
+We support [jsdoc typedefs](http://usejsdoc.org/tags-typedef.html) with following limitation:
+* Section `Using @typedef to document a complex type for a class ` is not supported at all. It's not supported by VSCode, so you should use this format at real world.
+
+If you want to present optional parameter you should write something like below (look at `description` property definition)
+
+```js
+/**
+ * multiline
+ * @typedef {{
+ *      title: string,
+ *      description: (string | undefined),
+ *      type: Object,
+ *      name: string
+ * }} MultiLineWithManyProps
+ */
+```
+
+All defined typedefs stored in `customTypes` property of resulting metainfo.
