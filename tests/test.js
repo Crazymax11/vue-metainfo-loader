@@ -1,7 +1,7 @@
 /* eslint-env jest */
 const fs = require('fs');
 const path = require('path');
-const { parseComponentCode } = require('../index.js');
+const { extractMeta } = require('../index.js');
 
 const testDirectories = fs
   .readdirSync('tests', { withFileTypes: true })
@@ -10,7 +10,7 @@ const testDirectories = fs
     return stat.isDirectory();
   });
 
-describe('parseComponentCode', () => {
+describe('extractMeta', () => {
   testDirectories.forEach(directory => {
     it(directory, () => {
       const componentPath = path.resolve('tests', directory, 'component.vue');
@@ -24,7 +24,7 @@ describe('parseComponentCode', () => {
 
       // eslint-disable-next-line
       const expectedResult = require(expectedResultPath);
-      expect(parseComponentCode(code)).toEqual(expectedResult);
+      expect(extractMeta(code)).toEqual(expectedResult);
     });
   });
 });

@@ -31,7 +31,7 @@ const md = new MarkdownIt({
  * @param {string} code
  * @returns {Object} MetaInfo.
  */
-function parseComponentCode(code) {
+function extractMeta(code) {
   const meta = {
     events: {},
     props: {},
@@ -311,8 +311,8 @@ function handleJsDocTypeTag(tag) {
 }
 
 module.exports = function loader(code) {
-  const component = parseComponentCode(code);
+  const component = extractMeta(code);
   return `module.exports = ${JSON.stringify(component, null, 4)}`;
 };
 
-module.exports.parseComponentCode = parseComponentCode;
+module.exports.extractMeta = extractMeta;
