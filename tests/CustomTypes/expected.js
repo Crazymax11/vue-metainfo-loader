@@ -69,7 +69,18 @@ module.exports = {
         },
       ],
     },
-    { description: 'multiline', tags: [] },
+    {
+      description: 'multiline',
+      tags: [
+        {
+          description: null,
+          name: 'MultiLineWithManyProps',
+          title: 'typedef',
+          type:
+            '{title: string, description: string, type: Object, name: string}',
+        },
+      ],
+    },
     { description: 'component with custom types', tags: [] },
   ],
   description: 'component with custom types',
@@ -82,5 +93,7 @@ module.exports = {
     Point: '{x: number, y: number}',
     XYPoint: 'Object',
     MultineLineWithOneProp: '{test: string}',
+    MultiLineWithManyProps:
+      '{title: string, description: string, type: Object, name: string}',
   },
 };

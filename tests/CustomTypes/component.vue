@@ -40,7 +40,7 @@
  * @typedef {{
  *      title: string,
  *      description: string,
- *      type?: Object,
+ *      type: Object,
  *      name: string
  * }} MultiLineWithManyProps
  */
