@@ -96,12 +96,22 @@ function extractJsMetaInfo(meta, code) {
           );
 
           // store all typedefs in custom types
-          // TODO: process multiline typedef
-          // TODO: process @type only if first tag and other tags are properties
-          _.flatMap(comments, comment => comment.tags)
-            .filter(tag => _.includes(['typedef'], tag.title))
-            .forEach(tag => {
-              _.set(meta, `customTypes.${tag.name}`, tag.type);
+          comments
+            .filter(comment =>
+              comment.tags.some(tag => tag.title === 'typedef'),
+            )
+            .forEach(comment => {
+              const { description } = comment;
+              const typedefTag = comment.tags.find(
+                tag => tag.title === 'typedef',
+              );
+
+              const customType = {
+                description,
+                type: typedefTag.type,
+              };
+
+              _.set(meta, `customTypes.${typedefTag.name}`, customType);
             });
 
           const lastComment = comments[comments.length - 1];
