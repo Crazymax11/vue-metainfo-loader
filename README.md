@@ -27,7 +27,7 @@ props.forEach(prop => {
     prop.tags; // JSDoc tags described before prop declaration
     prop.description; // JSDoc description
     prop.type; // prop type from JS
-    prop.hasValidator; // true if property has validator
+    prop.validator; // true if property has validator
     prop.required; // is property required
     prop.default; // default value
 })

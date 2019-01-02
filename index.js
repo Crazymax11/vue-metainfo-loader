@@ -163,7 +163,7 @@ function extractPropInfo(node) {
     // eslint-disable-next-line no-shadow
     node.value.properties.forEach(node => {
       if (node.key.name === 'validator') {
-        propertyDescription.hasValidator = true;
+        propertyDescription.validator = true;
         return;
       }
 
