@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/Crazymax11/vue-metainfo-loader#readme",
   "dependencies": {
+    "@babel/generator": "^7.2.2",
     "@babel/parser": "^7.0.0-rc.3",
     "babel-traverse": "^6.26.0",
     "doctrine": "^2.1.0",

@@ -4,7 +4,7 @@ const traverse = require('babel-traverse').default;
 
 const doctrine = require('doctrine');
 const parser = require('@babel/parser');
-
+const generate = require('@babel/generator').default;
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({
@@ -163,7 +163,10 @@ function extractPropInfo(node) {
     // eslint-disable-next-line no-shadow
     node.value.properties.forEach(node => {
       if (node.key.name === 'validator') {
-        propertyDescription.validator = true;
+        // method has method body in body property. Doctrine parses method node as is very nice.
+        const validatorBodyAst = node.method === true ? node : node.value;
+
+        propertyDescription.validator = generate(validatorBodyAst).code;
         return;
       }
 
