@@ -40,6 +40,14 @@ export default {
     },
 
     noDefault: {},
+
+    defaultWithDescription: {
+      /**
+       * This is default description
+       * @type {Array} test
+       */
+      default: [],
+    },
   },
 };
 

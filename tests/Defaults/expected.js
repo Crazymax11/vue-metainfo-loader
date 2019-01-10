@@ -1,28 +1,61 @@
 module.exports = {
   events: {},
   props: {
-    defaultArray: { default: '[]', name: 'defaultArray', tags: [] },
+    defaultArray: { default: { value: '[]' }, name: 'defaultArray', tags: [] },
     defaultArrowFunction: {
-      default: '() => true',
+      default: { value: '() => true' },
       name: 'defaultArrowFunction',
       tags: [],
     },
-    defaultBoolean: { default: 'true', name: 'defaultBoolean', tags: [] },
+    defaultBoolean: {
+      default: { value: 'true' },
+      name: 'defaultBoolean',
+      tags: [],
+    },
     defaultFunction: {
-      default: 'defaultStub',
+      default: { value: 'defaultStub' },
       name: 'defaultFunction',
       tags: [],
     },
     defaultMethod: {
-      default: `default() {
+      default: {
+        value: `default() {
   return [1, 2, 3];
 }`,
+      },
       name: 'defaultMethod',
       tags: [],
     },
-    defaultNumber: { default: '123', name: 'defaultNumber', tags: [] },
-    defaultObject: { default: '{}', name: 'defaultObject', tags: [] },
-    defaultString: { default: "'string'", name: 'defaultString', tags: [] },
+    defaultNumber: {
+      default: { value: '123' },
+      name: 'defaultNumber',
+      tags: [],
+    },
+    defaultObject: {
+      default: { value: '{}' },
+      name: 'defaultObject',
+      tags: [],
+    },
+    defaultString: {
+      default: { value: "'string'" },
+      name: 'defaultString',
+      tags: [],
+    },
     noDefault: { name: 'noDefault', tags: [] },
+    defaultWithDescription: {
+      name: 'defaultWithDescription',
+      tags: [],
+      default: {
+        description: 'This is default description',
+        tags: [
+          {
+            description: 'test',
+            title: 'type',
+            type: 'Array',
+          },
+        ],
+        value: '[]',
+      },
+    },
   },
 };

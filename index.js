@@ -166,17 +166,40 @@ function extractPropInfo(node) {
         // method has method body in body property. Doctrine parses method node as is very nice.
         const validatorBodyAst = node.method === true ? node : node.value;
 
-        propertyDescription.validator = generate(validatorBodyAst).code;
+        if (_.get(node, 'leadingComments.length')) {
+          const { description, tags } = parseComment(
+            _.last(node.leadingComments).value,
+          );
+
+          _.set(propertyDescription, 'validator.description', description);
+          _.set(propertyDescription, 'validator.tags', tags);
+        }
+
+        _.set(
+          propertyDescription,
+          'validator.value',
+          generate(validatorBodyAst).code,
+        );
+
         return;
       }
 
       if (node.key.name === 'default') {
+        if (_.get(node, 'leadingComments.length')) {
+          const { description, tags } = parseComment(
+            _.last(node.leadingComments).value,
+          );
+
+          _.set(propertyDescription, 'default.description', description);
+          _.set(propertyDescription, 'default.tags', tags);
+        }
+
         if (node.kind === 'method') {
-          propertyDescription.default = generate(node).code;
+          _.set(propertyDescription, 'default.value', generate(node).code);
           return;
         }
 
-        propertyDescription.default = generate(node.value).code;
+        _.set(propertyDescription, 'default.value', generate(node.value).code);
         return;
       }
 

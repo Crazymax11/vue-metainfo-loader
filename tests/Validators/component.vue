@@ -22,6 +22,15 @@ export default {
     noValidator: {
       default: true,
     },
+
+    validatorWithDescription: {
+      /**
+       * Test description
+       *
+       * @acceptable 1,2,3
+       */
+      validator: () => true,
+    },
   },
 };
 
