@@ -8,7 +8,7 @@ module.exports = {
     noValidator: {
       name: 'noValidator',
       tags: [],
-      default: true,
+      default: 'true',
     },
     validatorFunction: {
       name: 'validatorFunction',

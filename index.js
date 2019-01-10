@@ -170,13 +170,13 @@ function extractPropInfo(node) {
         return;
       }
 
-      if (
-        node.key.name === 'default' &&
-        (node.kind === 'method' || node.value.type === 'FunctionExpression')
-      ) {
-        // this is defailt() written as method
+      if (node.key.name === 'default') {
+        if (node.kind === 'method') {
+          propertyDescription.default = generate(node).code;
+          return;
+        }
 
-        propertyDescription[node.key.name] = 'function';
+        propertyDescription.default = generate(node.value).code;
         return;
       }
 
