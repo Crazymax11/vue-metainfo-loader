@@ -90,6 +90,18 @@ function extractJsMetaInfo(meta, code) {
     enter(path) {
       // extract default exports's JSDoc
       if (path.isExportDefaultDeclaration()) {
+        const propsNode = path.container[0].declaration.properties.find(
+          node => node.key.name === 'props',
+        );
+
+        // store props AST nodes
+        if (propsNode) {
+          propsNode.value.properties.forEach(prop => {
+            const info = extractPropInfo(prop);
+            _.set(meta, `props.${info.name}`, info);
+          });
+        }
+
         if (path.node.leadingComments) {
           const comments = path.node.leadingComments.map(({ value }) =>
             parseComment(value),
@@ -132,14 +144,6 @@ function extractJsMetaInfo(meta, code) {
               meta.events[tag.name] = _.pick(tag, ['payload', 'description']);
             });
         }
-      }
-
-      // store props AST nodes
-      if (path.isIdentifier({ name: 'props' })) {
-        path.container.value.properties.forEach(prop => {
-          const info = extractPropInfo(prop);
-          _.set(meta, `props.${info.name}`, info);
-        });
       }
     },
   });
