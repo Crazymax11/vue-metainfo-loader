@@ -11,4 +11,5 @@ module.exports = {
     },
     { name: 'propWithoutComment', type: 'Number' },
   ],
+  customTypes: [],
 };

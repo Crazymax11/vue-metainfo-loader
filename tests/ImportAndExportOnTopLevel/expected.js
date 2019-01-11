@@ -3,4 +3,5 @@ module.exports = {
   props: [],
   description:
     'bugfix test, import and export on top level broke meta extractor',
+  customTypes: [],
 };

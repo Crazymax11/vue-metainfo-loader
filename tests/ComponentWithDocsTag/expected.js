@@ -21,4 +21,5 @@ module.exports = {
 </code></pre>
 `,
   props: [],
+  customTypes: [],
 };

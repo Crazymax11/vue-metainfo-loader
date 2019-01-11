@@ -35,6 +35,7 @@ function extractMeta(code) {
   const meta = {
     events: {},
     props: {},
+    customTypes: [],
   };
 
   extractDocs(meta, code);
@@ -127,12 +128,11 @@ function extractJsMetaInfo(meta, code) {
                 tag => tag.title === 'typedef',
               );
 
-              const customType = {
+              meta.customTypes.push({
                 description,
                 type: typedefTag.type,
-              };
-
-              _.set(meta, `customTypes.${typedefTag.name}`, customType);
+                name: typedefTag.name,
+              });
             });
 
           const lastComment = comments[comments.length - 1];

@@ -9,4 +9,5 @@ module.exports = {
     { name: '$emitInJsWithArg' },
   ],
   props: [],
+  customTypes: [],
 };

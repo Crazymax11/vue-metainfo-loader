@@ -8,4 +8,5 @@ module.exports = {
     { name: 'delete' },
   ],
   props: [],
+  customTypes: [],
 };

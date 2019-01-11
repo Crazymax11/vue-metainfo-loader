@@ -2,32 +2,38 @@ module.exports = {
   description: 'component with custom types',
   events: [],
   props: [],
-  customTypes: {
-    NumberLike: {
+  customTypes: [
+    {
+      name: 'NumberLike',
       description:
         'short description\nA number, or a string containing a number.',
       type: '(number | string)',
     },
-    NumberAlias: {
+    {
+      name: 'NumberAlias',
       description:
         'short description\nA number, or a string containing a number.',
       type: 'number',
     },
-    Point: {
+    {
+      name: 'Point',
       description: 'short description of object\nPoint in x, y space',
       type: '{x: number, y: number}',
     },
-    XYPoint: {
+    {
+      name: 'XYPoint',
       description: 'long description\nPoint in x, y space',
       type: 'Object',
     },
-    MultineLineWithOneProp: {
+    {
+      name: 'MultineLineWithOneProp',
       description: 'multiline',
       type: '{test: string}',
     },
-    MultiLineWithManyProps: {
+    {
+      name: 'MultiLineWithManyProps',
       description: 'multiline',
       type: '{title: string, description: string, type: Object, name: string}',
     },
-  },
+  ],
 };

@@ -19,4 +19,5 @@ module.exports = {
     },
     { name: 'short', description: 'Short prop', type: 'Array' },
   ],
+  customTypes: [],
 };

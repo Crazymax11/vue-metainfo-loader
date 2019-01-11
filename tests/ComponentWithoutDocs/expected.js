@@ -7,4 +7,5 @@ module.exports = {
       type: 'Array',
     },
   ],
+  customTypes: [],
 };
