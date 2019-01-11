@@ -12,6 +12,11 @@ module.exports = {
         test: /\.pug$/,
         loaders: ['pug-plain-loader'],
       },
+      {
+        test: /\.vue$/,
+        loaders: ['loader'],
+        enforce: 'pre',
+      },
     ],
   },
 };

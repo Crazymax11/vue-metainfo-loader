@@ -6,8 +6,6 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-import meta from '!!loader!../Components/PropsTable.vue';
 import PropsTable from '../Components/PropsTable.vue';
 
 export default {
@@ -15,7 +13,7 @@ export default {
     PropsTable,
   },
   data: () => ({
-    meta,
+    meta: PropsTable.meta,
   }),
 };
 </script>

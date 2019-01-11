@@ -90,9 +90,10 @@ function extractJsMetaInfo(meta, code) {
     enter(path) {
       // extract default exports's JSDoc
       if (path.isExportDefaultDeclaration()) {
-        const propsNode = path.container[0].declaration.properties.find(
-          node => node.key.name === 'props',
-        );
+        // TODO: add test case: import something, export default.
+        const propsNode = path.container
+          .find(n => n.type === 'ExportDefaultDeclaration')
+          .declaration.properties.find(node => node.key.name === 'props');
 
         // store props AST nodes
         if (propsNode) {
@@ -351,8 +352,17 @@ function handleJsDocTypeTag(tag) {
 }
 
 module.exports = function loader(code) {
-  const component = extractMeta(code);
-  return `module.exports = ${JSON.stringify(component, null, 4)}`;
+  const meta = extractMeta(code);
+
+  // TODO: make via AST
+  code = code.replace(
+    'export default {',
+    `export default {
+meta: ${JSON.stringify(meta, null, 4)},
+`,
+  );
+
+  return `module.exports = ${code}`;
 };
 
 module.exports.extractMeta = extractMeta;
