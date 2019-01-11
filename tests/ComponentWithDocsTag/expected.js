@@ -1,5 +1,5 @@
 module.exports = {
-  events: {},
+  events: [],
   description: 'Component with docs tag',
   docs: `<h1>Component with docs tag</h1>
 <h2>h2</h2>
@@ -20,12 +20,5 @@ module.exports = {
 <pre><code class="js">code block
 </code></pre>
 `,
-  props: {},
-  tags: [],
-  comments: [
-    {
-      description: 'Component with docs tag',
-      tags: [],
-    },
-  ],
+  props: [],
 };

@@ -1,78 +1,22 @@
 module.exports = {
-  events: {
-    clicked: {
-      description: 'when component is clicked',
-    },
-    changed: {},
-    statusChanged: {
-      payload: 'boolean',
-    },
-    anotherStatusChanged: {
-      payload: 'boolean',
-      description: 'value is a new status',
-    },
-  },
-  description: 'Test',
-  tags: [
-    {
-      name: 'clicked',
-      description: 'when component is clicked',
-      title: 'emits',
-    },
-    {
-      name: 'changed',
-      title: 'emits',
-    },
-    {
-      name: 'statusChanged',
-      title: 'emits',
-      payload: 'boolean',
-    },
+  events: [
+    { name: 'clicked', description: 'when component is clicked' },
+    { name: 'changed' },
+    { name: 'statusChanged', payload: 'boolean' },
     {
       name: 'anotherStatusChanged',
-      description: 'value is a new status',
-      title: 'emits',
       payload: 'boolean',
+      description: 'value is a new status',
     },
   ],
-  comments: [
+  description: 'Test',
+  props: [
     {
-      description: 'Test',
-      tags: [
-        {
-          name: 'clicked',
-          description: 'when component is clicked',
-          title: 'emits',
-        },
-        {
-          name: 'changed',
-          title: 'emits',
-        },
-        {
-          name: 'statusChanged',
-          title: 'emits',
-          payload: 'boolean',
-        },
-        {
-          name: 'anotherStatusChanged',
-          description: 'value is a new status',
-          title: 'emits',
-          payload: 'boolean',
-        },
-      ],
-    },
-  ],
-  props: {
-    sample: {
       name: 'sample',
       description: 'Just a prop',
       required: true,
       type: 'Array',
     },
-    short: {
-      name: 'short',
-      description: 'Short prop',
-      type: 'Array',
-    },
-  },
+    { name: 'short', description: 'Short prop', type: 'Array' },
+  ],
 };

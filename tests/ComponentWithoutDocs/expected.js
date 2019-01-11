@@ -1,10 +1,10 @@
 module.exports = {
-  events: {},
-  props: {
-    sample: {
+  events: [],
+  props: [
+    {
       name: 'sample',
       required: true,
       type: 'Array',
     },
-  },
+  ],
 };

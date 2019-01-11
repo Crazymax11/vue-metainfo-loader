@@ -1,18 +1,8 @@
 module.exports = {
-  props: {
-    validatorArrowFunction: {
-      validator: { value: '() => true' },
-      name: 'validatorArrowFunction',
-    },
-    noValidator: {
-      name: 'noValidator',
-      default: { value: 'true' },
-    },
-    validatorFunction: {
-      name: 'validatorFunction',
-      validator: { value: 'validatorStub' },
-    },
-    validatorMethod: {
+  props: [
+    { name: 'validatorArrowFunction', validator: { value: '() => true' } },
+
+    {
       name: 'validatorMethod',
       validator: {
         value: `validator(value) {
@@ -20,19 +10,15 @@ module.exports = {
 }`,
       },
     },
-    validatorWithDescription: {
+    { name: 'validatorFunction', validator: { value: 'validatorStub' } },
+    { name: 'noValidator', default: { value: 'true' } },
+    {
       name: 'validatorWithDescription',
       validator: {
         value: '() => true',
         description: 'Test description',
-        tags: [
-          {
-            title: 'acceptable',
-            description: '1,2,3',
-          },
-        ],
       },
     },
-  },
-  events: {},
+  ],
+  events: [],
 };

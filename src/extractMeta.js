@@ -42,6 +42,15 @@ function extractMeta(code) {
   extractEvents(meta, code);
 
   extractJsMetaInfo(meta, code);
+
+  meta.events = _.toPairs(meta.events).map(([name, eventMeta]) =>
+    _.merge({ name }, eventMeta),
+  );
+
+  meta.props = _.toPairs(meta.props).map(([name, propsMeta]) =>
+    _.merge({ name }, propsMeta),
+  );
+
   return meta;
 }
 
@@ -129,8 +138,6 @@ function extractJsMetaInfo(meta, code) {
           const lastComment = comments[comments.length - 1];
 
           meta.description = lastComment.description;
-          meta.tags = lastComment.tags;
-          meta.comments = comments;
 
           /**
            * according to JSDoc fire tag
@@ -170,12 +177,11 @@ function extractPropInfo(node) {
         const validatorBodyAst = node.method === true ? node : node.value;
 
         if (_.get(node, 'leadingComments.length')) {
-          const { description, tags } = parseComment(
+          const { description } = parseComment(
             _.last(node.leadingComments).value,
           );
 
           _.set(propertyDescription, 'validator.description', description);
-          _.set(propertyDescription, 'validator.tags', tags);
         }
 
         _.set(
@@ -189,12 +195,11 @@ function extractPropInfo(node) {
 
       if (node.key.name === 'default') {
         if (_.get(node, 'leadingComments.length')) {
-          const { description, tags } = parseComment(
+          const { description } = parseComment(
             _.last(node.leadingComments).value,
           );
 
           _.set(propertyDescription, 'default.description', description);
-          _.set(propertyDescription, 'default.tags', tags);
         }
 
         if (node.kind === 'method') {

@@ -1,35 +1,14 @@
 module.exports = {
   description: 'kek',
-  tags: [],
-  comments: [
+  events: [],
+  props: [
+    { name: 'first', description: 'lol', type: 'Array' },
     {
-      description: 'lol',
-      tags: [],
-    },
-    {
-      description: 'Test',
-      tags: [],
-    },
-    {
-      description: 'kek',
-      tags: [],
-    },
-  ],
-  events: {},
-  props: {
-    first: {
-      name: 'first',
-      description: 'lol',
-      type: 'Array',
-    },
-    second: {
-      description: 'Just a prop',
       name: 'second',
+      description: 'Just a prop',
+
       type: 'Array',
     },
-    propWithoutComment: {
-      type: 'Number',
-      name: 'propWithoutComment',
-    },
-  },
+    { name: 'propWithoutComment', type: 'Number' },
+  ],
 };

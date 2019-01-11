@@ -1,23 +1,23 @@
 module.exports = {
-  events: {},
-  props: {
-    first: {
+  events: [],
+  props: [
+    {
+      name: 'first',
       default: {
         value: `default() {
   return 1;
 }`,
       },
-      name: 'first',
       type: 'Number',
     },
-    second: {
+    {
+      name: 'second',
       default: {
         value: `default() {
   return 2;
 }`,
       },
-      name: 'second',
       type: 'Number',
     },
-  },
+  ],
 };
