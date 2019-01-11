@@ -4,7 +4,6 @@ module.exports = {
     sample: {
       name: 'sample',
       required: true,
-      tags: [],
       type: 'Array',
     },
   },

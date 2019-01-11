@@ -21,17 +21,14 @@ module.exports = {
       name: 'first',
       description: 'lol',
       type: 'Array',
-      tags: [],
     },
     second: {
       description: 'Just a prop',
       name: 'second',
       type: 'Array',
-      tags: [],
     },
     propWithoutComment: {
       type: 'Number',
-      tags: [],
       name: 'propWithoutComment',
     },
   },

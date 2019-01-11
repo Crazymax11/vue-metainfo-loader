@@ -68,22 +68,11 @@ module.exports = {
       description: 'Just a prop',
       required: true,
       type: 'Array',
-      tags: [],
     },
     short: {
       name: 'short',
       description: 'Short prop',
       type: 'Array',
-      tags: [
-        {
-          description: '[]',
-          title: 'example',
-        },
-        {
-          description: '123',
-          title: 'customTag',
-        },
-      ],
     },
   },
 };
