@@ -1,6 +1,6 @@
 module.exports = {
   resolveLoader: {
-    modules: ['node_modules', 'loader'],
+    modules: ['node_modules', 'src'],
   },
   module: {
     rules: [
