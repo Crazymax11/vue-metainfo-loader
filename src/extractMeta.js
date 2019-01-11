@@ -90,7 +90,6 @@ function extractJsMetaInfo(meta, code) {
     enter(path) {
       // extract default exports's JSDoc
       if (path.isExportDefaultDeclaration()) {
-        // TODO: add test case: import something, export default.
         const propsNode = path.container
           .find(n => n.type === 'ExportDefaultDeclaration')
           .declaration.properties.find(node => node.key.name === 'props');
