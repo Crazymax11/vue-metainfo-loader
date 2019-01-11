@@ -160,7 +160,6 @@ function extractJsMetaInfo(meta, code) {
  */
 function extractPropInfo(node) {
   const propertyDescription = {
-    tags: [],
     name: node.key.name,
   };
 
@@ -221,7 +220,10 @@ function extractPropInfo(node) {
       node.leadingComments[node.leadingComments.length - 1].value;
     const { description, tags } = parseComment(lastComment);
     propertyDescription.description = description;
-    propertyDescription.tags = tags;
+    const typeTag = tags.find(({ title }) => title === 'type');
+    if (typeTag) {
+      propertyDescription.type = typeTag.type;
+    }
   }
 
   return propertyDescription;

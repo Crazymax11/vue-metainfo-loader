@@ -8,7 +8,6 @@ module.exports = {
 }`,
       },
       name: 'first',
-      tags: [],
       type: 'Number',
     },
     second: {
@@ -18,7 +17,6 @@ module.exports = {
 }`,
       },
       name: 'second',
-      tags: [],
       type: 'Number',
     },
   },

@@ -4,7 +4,6 @@ module.exports = {
   events: {},
   props: {
     props: {
-      tags: [],
       name: 'props',
       type: 'Array',
     },

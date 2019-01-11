@@ -1,15 +1,8 @@
 module.exports = {
   props: {
     superProp: {
-      tags: [
-        {
-          description: null,
-          title: 'type',
-          type: 'Prop',
-        },
-      ],
       name: 'superProp',
-      type: 'Object',
+      type: 'Prop',
       description: 'Typed Prop',
     },
   },
