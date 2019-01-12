@@ -1,29 +1,28 @@
-<template lang="pug">
-div
-    div Story
-    Story(:meta="meta")
-
-    hr
-    Story(:meta="componentMeta")
-        template(slot="example")
-            Component(
-                :title="Component"
-            )
-
-</template>
-
 <script>
 import Story from '../Components/Story.vue';
-import Component from '../Components/Component.vue';
+import FeedbackPanel from '../ComponentStubs/FeedbackPanel.vue';
 
 export default {
   components: {
     Story,
-    Component,
+    FeedbackPanel,
   },
   data: () => ({
     meta: Story.meta,
-    componentMeta: Component.meta,
+    componentMeta: FeedbackPanel.meta,
   }),
 };
 </script>
+
+<template>
+  <div>
+    <div>Story</div>
+    <Story :meta="meta"></Story>
+    <hr />
+    <Story :meta="componentMeta">
+      <template slot="example">
+        <FeedbackPanel title="Feedback"></FeedbackPanel>
+      </template>
+    </Story>
+  </div>
+</template>

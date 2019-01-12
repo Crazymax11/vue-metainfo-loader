@@ -1,9 +1,3 @@
-<template lang="pug">
-div
-  div events
-  div {{ str }}
-</template>
-
 <script>
 export default {
   props: {
@@ -19,6 +13,14 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>
+    <div>events</div>
+    <div>{{ str }}</div>
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .test {
   color: red;

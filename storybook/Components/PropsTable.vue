@@ -1,9 +1,3 @@
-<template lang="pug">
-div
-  div props
-  div {{ str }}
-</template>
-
 <script>
 /**
  * Props Table
@@ -22,6 +16,14 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>
+    <div>props</div>
+    <div>{{ str }}</div>
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .test {
   color: red;

@@ -1,11 +1,20 @@
 module.exports = {
-    extends: ['airbnb-base', 'plugin:vue/recommended', 'plugin:prettier/recommended'],
+    extends: [
+        'airbnb-base',
+        'plugin:prettier/recommended',
+        'plugin:vue/recommended',
+        'prettier/vue',
+    ],
     plugins: [
         'prettier',
         'jsdoc'
     ],
     rules: {
-        'prettier/prettier': ['error', {'singleQuote': true, trailingComma: 'all'}],
+        'prettier/prettier': ['error', {
+            singleQuote: true,
+            trailingComma: 'all',
+            htmlWhitespaceSensitivity: 'ignore'
+        }],
         'no-use-before-define': 'off',
 
         // @see https://github.com/gajus/eslint-plugin-jsdoc
@@ -27,4 +36,5 @@ module.exports = {
         "jsdoc/require-returns-type": 2,
         "jsdoc/valid-types": 2
     }
-}
+};
+

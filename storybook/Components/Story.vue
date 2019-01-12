@@ -1,17 +1,3 @@
-<template lang="pug">
-    div Story
-        slot(name="description")
-            Description(
-                :description="meta.description"
-                :name="meta.name"
-            )
-        slot(name="props")
-            PropsTable(:props="meta.props")
-        slot(name="events")
-            EventsTable(:events="meta.events")
-        slot
-        slot(name="example")
-</template>
 <script>
 import PropsTable from './PropsTable.vue';
 import EventsTable from './EventsTable.vue';
@@ -39,6 +25,20 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>
+    Story
+    <slot name="description">
+      <Description :description="meta.description" :name="meta.name" />
+    </slot>
+    <slot name="props"><PropsTable :props="meta.props" /></slot>
+    <slot name="events"><EventsTable :events="meta.events" /></slot>
+    <slot />
+    <slot name="example" />
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .test {
 }

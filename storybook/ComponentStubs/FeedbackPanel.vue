@@ -1,11 +1,3 @@
-<template lang="pug">
-div
-    h3 {{title}}
-    button(@click="onClick") LIKE
-    button(@click="$emit('dislikeClicked')") DISLIKE
-    a(:href="link") About
-</template>
-
 <script>
 /**
  * Feedback panel
@@ -35,3 +27,12 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>
+    <h3>{{ title }}</h3>
+    <button @click="onClick">LIKE</button>
+    <button @click="$emit('dislikeClicked')">DISLIKE</button>
+    <a :href="link">About</a>
+  </div>
+</template>

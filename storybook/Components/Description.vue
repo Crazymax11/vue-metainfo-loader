@@ -1,8 +1,3 @@
-<template lang="pug">
-div
-    h1 {{name}}
-    div {{description}}
-</template>
 <script>
 export default {
   props: {
@@ -11,3 +6,10 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>
+    <h1>{{ name }}</h1>
+    <div>{{ description }}</div>
+  </div>
+</template>
