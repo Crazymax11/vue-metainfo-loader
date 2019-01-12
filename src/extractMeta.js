@@ -306,7 +306,7 @@ function handleJsDocEventTag(tag) {
   }
 
   // trying to parse description, which is like change {ChangeEvent} - comment
-  const reg = /(\w+)\s*(?:\{(.*)\})?\s*(.*)?/;
+  const reg = /(\w+)\s*(?:\{(.*)\})?[\s-]*(.*)?/;
   const [
     ,
     name = '',
