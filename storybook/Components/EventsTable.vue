@@ -1,23 +1,20 @@
 <template lang="pug">
 div
-  div props
+  div events
   div {{ str }}
 </template>
 
 <script>
-/**
- * Props Table
- */
 export default {
   props: {
-    props: {
+    events: {
       type: Array,
     },
   },
   computed: {
     // debug
     str() {
-      return JSON.stringify(this.props);
+      return JSON.stringify(this.events);
     },
   },
 };
