@@ -35,5 +35,14 @@ module.exports = {
       description: 'multiline',
       type: '{title: string, description: string, type: Object, name: string}',
     },
+    {
+      name: 'first',
+      description: 'first',
+      type: 'String',
+    },
+    {
+      name: 'second',
+      type: 'String',
+    },
   ],
 };

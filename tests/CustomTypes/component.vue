@@ -46,6 +46,15 @@
  */
 
 /**
+ *
+ * first
+ * @typedef {String} first
+ *
+ * second
+ * @typedef {String} second
+ */
+
+/**
  * component with custom types
  */
 export default {};

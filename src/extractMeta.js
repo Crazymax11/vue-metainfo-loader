@@ -122,14 +122,24 @@ function extractJsMetaInfo(meta, code) {
             )
             .forEach(comment => {
               const { description } = comment;
-              const typedefTag = comment.tags.find(
+              const typedefTags = comment.tags.filter(
                 tag => tag.title === 'typedef',
               );
 
+              // ine one JSDoc we can define several typedefs
+              // but doctrine will parse description only for the first one
+              // so we store the first with description, and others without
               meta.customTypes.push({
                 description,
-                type: typedefTag.type,
-                name: typedefTag.name,
+                type: _.head(typedefTags).type,
+                name: _.head(typedefTags).name,
+              });
+
+              typedefTags.slice(1).forEach(tag => {
+                meta.customTypes.push({
+                  type: tag.type,
+                  name: tag.name,
+                });
               });
             });
 
