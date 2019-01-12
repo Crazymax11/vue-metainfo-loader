@@ -113,9 +113,7 @@ function extractJsMetaInfo(meta, code) {
         }
 
         if (path.node.leadingComments) {
-          const comments = path.node.leadingComments.map(({ value }) =>
-            parseComment(value),
-          );
+          const comments = parseLeadingComments(path.node);
 
           // store all typedefs in custom types
           comments
@@ -177,12 +175,15 @@ function extractPropInfo(node) {
         const validatorBodyAst = node.method === true ? node : node.value;
 
         if (_.get(node, 'leadingComments.length')) {
-          const { description } = parseComment(
-            _.last(node.leadingComments).value,
-          );
+          const { description } = _.last(parseLeadingComments(node));
 
           _.set(propertyDescription, 'validator.description', description);
         }
+
+        // If generate AST with leading comments, they will be generated before method too
+        // We don't need it because we already extracted comments to description
+        const { leadingComments } = node;
+        delete node.leadingComments;
 
         _.set(
           propertyDescription,
@@ -190,14 +191,14 @@ function extractPropInfo(node) {
           generate(validatorBodyAst).code,
         );
 
+        node.leadingComments = leadingComments;
+
         return;
       }
 
       if (node.key.name === 'default') {
         if (_.get(node, 'leadingComments.length')) {
-          const { description } = parseComment(
-            _.last(node.leadingComments).value,
-          );
+          const { description } = _.last(parseLeadingComments(node));
 
           _.set(propertyDescription, 'default.description', description);
         }
@@ -220,9 +221,7 @@ function extractPropInfo(node) {
   }
 
   if (node.leadingComments) {
-    const lastComment =
-      node.leadingComments[node.leadingComments.length - 1].value;
-    const { description, tags } = parseComment(lastComment);
+    const { description, tags } = _.last(parseLeadingComments(node));
     propertyDescription.description = description;
     const typeTag = tags.find(({ title }) => title === 'type');
     if (typeTag) {
@@ -355,6 +354,49 @@ function handleJsDocTypeTag(tag) {
   tag.type = doctrine.type.stringify(tag.type);
 
   return tag;
+}
+
+/**
+ * Parses leading comments, merging one line comments into one
+ * and preparing emits, fires, type and typedef comment
+ *
+ * @param {Object} node
+ * @returns {Array<{tags: Array, description: string}>} comments
+ */
+function parseLeadingComments(node) {
+  if (!_.get(node, 'leadingComments.length')) {
+    return [];
+  }
+
+  const comments = [];
+  // TODO: refactor?
+  // We need to merge one line comments into one output comment
+  // and dont break comments order
+  for (let i = 0; i < node.leadingComments.length; i += 1) {
+    // if comment is oneline, take all oneline from this index and merge them into one
+    if (node.leadingComments[i].type === 'CommentLine') {
+      const inlines = _.takeWhile(node.leadingComments.slice(i), {
+        type: 'CommentLine',
+      })
+        .map(({ value }) => parseComment(value))
+        .map(comment => comment.description.trim());
+
+      // -1 because i += 1 of for cycle
+      i += inlines.length - 1;
+
+      comments.push({
+        description: inlines.join('\n'),
+        tags: [],
+      });
+
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    comments.push(parseComment(node.leadingComments[i].value));
+  }
+
+  return comments;
 }
 
 module.exports = extractMeta;
