@@ -14,5 +14,5 @@ What is needed to do.
 Why this is important
 
 **Definition Of Done**
-[ ] some criteria
-[ ] another criteria
+- [ ] some criteria
+- [ ] another criteria
