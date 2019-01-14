@@ -39,7 +39,6 @@ It adds loader in order to run before vue-loader and extract component's meta. T
 
 ## Usage
 
-
 For example, you have a component
 ```html
 <template>
@@ -133,6 +132,8 @@ console.log(meta);
 
 */
 ```
+
+More examples you can see [here](/tests)
 
 ## Custom JSDoc types
 
