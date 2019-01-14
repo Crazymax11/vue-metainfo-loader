@@ -6,6 +6,8 @@ const { extractMeta } = require('../index.js');
 const testDirectories = fs
   .readdirSync('tests', { withFileTypes: true })
   .filter(directoryItem => {
+    console.log(directoryItem);
+    console.log(path.resolve('tests', directoryItem));
     const stat = fs.statSync(path.resolve('tests', directoryItem));
     return stat.isDirectory();
   });
