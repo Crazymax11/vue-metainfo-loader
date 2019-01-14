@@ -3,36 +3,136 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 This loader extracts from SFC:
-* JSDoc about component
-* JSDoc and definition of props
-* Emitted events
+* Component description
+* Component props
+    * name
+    * description
+    * type
+    * default
+    * validator
+    * required
+* Component events
+    * name
+    * payload
 
-## Example
+## Configuring
+
+Open your webpack config and add following lines to rules.
 
 ```js
-// use inline loader description style
-import meta from '!!vue-metainfo-loader!path-to-vue-component.vue';
-
-const {
-    events, // events are emitted in SFC
-    tags, // JSDoc tags described before default export
-    props, // props definitions consist of JSDoc and JS prop declaration
-    description, // JSDoc description
-    comments, // All comments described before default export
-    docs, // <docs> tag content rendered in html,
-    customTypes, // defined @typedef in JSDoc comments
-} = meta;
-
-props.forEach(prop => {
-    prop.tags; // JSDoc tags described before prop declaration
-    prop.description; // JSDoc description
-    prop.type; // prop type from JS
-    prop.validator; // true if property has validator
-    prop.required; // is property required
-    prop.default; // default value
-})
+{
+    test: /\.vue$/,
+    loaders: ['vue-metainfo-loader'],
+    enforce: 'pre',
+},
 ```
 
+It adds loader in order to run before vue-loader and extract component's meta. These lines are equal to: 
+
+```js
+{
+    test: /\.vue$/,
+    loaders: ['vue-loader', 'vue-metainfo-loader'],
+},
+```
+
+
+## Usage
+
+
+For example, you have a component
+```html
+<template>
+  <div>
+    <h1>Awesome Counter</h1>
+    <div v-for="counter in counters" :key="counter">
+      <div>{{ counter }}</div>
+      <button @click="increment(counter)">+</button>
+      <button @click="decrement(counter)">-</button>
+    </div>
+  </div>
+</template>
+
+<script>
+/**
+ * My Awesome Counter
+ * @emits increment {string} counter was requested to increment
+ * @emits decrement {string} counter was requested to decrement
+ */
+export default {
+  props: {
+    // array of counters names
+    counters: {
+      type: Array,
+      // just an empty array
+      default: () => [],
+      // check if all values are strings
+      validator(counters) {
+        return counters.every(counter => typeof counter === 'string');
+      },
+    },
+  },
+  methods: {
+    increment(counter) {
+      this.$emit('increment', counter);
+    },
+    decrement(counter) {
+      this.$emit('decrement', counter);
+    },
+  },
+};
+</script>
+```
+
+You'll get next meta
+
+```js
+import Component from 'Component.vue';
+
+const meta = Component.meta;
+
+console.log(meta.description); // My awesome counter!
+console.log(meta.props); // props
+console.log(meta.events); // events
+console.log(meta.customTypes); // customTypes
+
+
+console.log(meta);
+/*
+
+{
+  customTypes: [],
+  description: 'My Awesome Counter',
+  events: [
+    {
+      description: 'counter was requested to increment',
+      name: 'increment',
+      payload: 'string',
+    },
+    {
+      description: 'counter was requested to decrement',
+      name: 'decrement',
+      payload: 'string',
+    },
+  ],
+  props: [
+    {
+      default: { description: 'just an empty array', value: '() => []' },
+      description: 'array of counters names',
+      name: 'counters',
+      type: 'Array',
+      validator: {
+        description: 'check if all values are strings',
+        value: `validator(counters) {
+      return counters.every(counter => typeof counter === 'string');
+    }`,
+      },
+    },
+  ],
+}
+
+*/
+```
 
 ## Custom JSDoc types
 
