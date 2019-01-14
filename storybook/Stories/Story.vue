@@ -8,18 +8,14 @@ export default {
     FeedbackPanel,
   },
   data: () => ({
-    meta: Story.meta,
-    componentMeta: FeedbackPanel.meta,
+    meta: FeedbackPanel.meta,
   }),
 };
 </script>
 
 <template>
   <div>
-    <div>Story</div>
-    <Story :meta="meta"></Story>
-    <hr />
-    <Story :meta="componentMeta">
+    <Story :meta="meta">
       <template slot="example">
         <FeedbackPanel title="Feedback"></FeedbackPanel>
       </template>
