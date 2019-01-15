@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loader should extract component name from filename, when resourcePath is absolute path 1`] = `
+"<script>export default {
+  meta: {
+    \\"events\\": [],
+    \\"props\\": [],
+    \\"customTypes\\": [],
+    \\"name\\": \\"componentName\\"
+},
+  }</script>"
+`;
+
+exports[`loader should extract component name from filename, when resourcePath is filename 1`] = `
+"<script>export default {
+  meta: {
+    \\"events\\": [],
+    \\"props\\": [],
+    \\"customTypes\\": [],
+    \\"name\\": \\"componentName\\"
+},
+  }</script>"
+`;
+
+exports[`loader should not crash component if it already has name or meta 1`] = `
+"<script>export default {
+  meta: {
+    \\"events\\": [],
+    \\"props\\": [],
+    \\"customTypes\\": [],
+    \\"name\\": \\"componentName\\"
+},
+  name: 'test', meta: 'test2'}</script>"
+`;

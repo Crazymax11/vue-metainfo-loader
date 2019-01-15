@@ -1,7 +1,19 @@
 const extractMeta = require('./extractMeta.js');
 
 module.exports = function loader(code) {
-  const meta = extractMeta(code);
+  let meta;
+  try {
+    meta = extractMeta(code);
+  } catch (err) {
+    console.warn(
+      `vue-metainfo-loader: Error has occured while processing componentName: ${
+        err.message
+      }`,
+    );
+
+    console.error(err);
+    return code;
+  }
 
   const re = /[^\\/@]+\.vue/;
   const matched = this.resourcePath.match(re);
@@ -19,5 +31,5 @@ module.exports = function loader(code) {
   `,
   );
 
-  return `module.exports = ${modifiedCode}`;
+  return modifiedCode;
 };
