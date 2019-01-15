@@ -4,6 +4,7 @@
 
 This loader extracts from SFC:
 * Component description
+* Component name
 * Component props
     * name
     * description
@@ -94,7 +95,7 @@ console.log(meta.description); // My awesome counter!
 console.log(meta.props); // props
 console.log(meta.events); // events
 console.log(meta.customTypes); // customTypes
-
+console.log(meta.name); // name in declaration or filename without .vue
 
 console.log(meta);
 /*
