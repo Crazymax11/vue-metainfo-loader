@@ -1,3 +1,13 @@
+# [2.1.0](https://github.com/Crazymax11/vue-metainfo-loader/compare/v2.0.0...v2.1.0) (2019-01-15)
+
+
+### Features
+
+* **ExtractMeta:** Extract name from component declaration ([b1d3bd0](https://github.com/Crazymax11/vue-metainfo-loader/commit/b1d3bd0)), closes [#9](https://github.com/Crazymax11/vue-metainfo-loader/issues/9)
+* **Loader:** Extract name from filepath ([6fe0d29](https://github.com/Crazymax11/vue-metainfo-loader/commit/6fe0d29)), closes [#9](https://github.com/Crazymax11/vue-metainfo-loader/issues/9)
+
+
+
 # [2.0.0](https://github.com/Crazymax11/vue-metainfo-loader/compare/v1.5.0...v2.0.0) (2019-01-14)
 
 
