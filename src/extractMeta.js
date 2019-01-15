@@ -112,6 +112,14 @@ function extractJsMetaInfo(meta, code) {
           });
         }
 
+        const nameNode = path.node.declaration.properties.find(
+          node => node.key.name === 'name',
+        );
+
+        if (nameNode) {
+          meta.name = nameNode.value.value;
+        }
+
         if (path.node.leadingComments) {
           const comments = parseLeadingComments(path.node);
 
