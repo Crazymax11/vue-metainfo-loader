@@ -198,18 +198,11 @@ function extractPropInfo(node) {
           _.set(propertyDescription, 'validator.description', description);
         }
 
-        // If generate AST with leading comments, they will be generated before method too
-        // We don't need it because we already extracted comments to description
-        const { leadingComments } = node;
-        delete node.leadingComments;
-
         _.set(
           propertyDescription,
           'validator.value',
-          generate(validatorBodyAst).code,
+          getMethodCode(validatorBodyAst),
         );
-
-        node.leadingComments = leadingComments;
 
         return;
       }
@@ -222,7 +215,8 @@ function extractPropInfo(node) {
         }
 
         if (node.kind === 'method') {
-          _.set(propertyDescription, 'default.value', generate(node).code);
+          _.set(propertyDescription, 'default.value', getMethodCode(node));
+
           return;
         }
 
@@ -415,6 +409,24 @@ function parseLeadingComments(node) {
   }
 
   return comments;
+}
+
+/**
+ * Returns source code of declared method
+ *
+ * @param {Object} node
+ * @returns {string} code
+ */
+function getMethodCode(node) {
+  // If generate AST with leading comments, they will be generated before method too
+  // We don't need it because we already extracted comments to description
+  const { leadingComments } = node;
+  delete node.leadingComments;
+
+  const { code } = generate(node);
+
+  node.leadingComments = leadingComments;
+  return code;
 }
 
 module.exports = extractMeta;

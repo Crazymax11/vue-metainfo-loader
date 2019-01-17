@@ -2,11 +2,15 @@ module.exports = {
   events: [],
   props: [
     {
-      default: { value: '() => true' },
+      default: {
+        value: '() => true',
+        description: 'returns true',
+      },
       name: 'defaultArrowFunction',
     },
     {
       default: {
+        description: 'returns [1, 2, 3]',
         value: `default() {
   return [1, 2, 3];
 }`,

@@ -6,10 +6,14 @@
 export default {
   props: {
     defaultArrowFunction: {
+      /**
+       * returns true
+       */
       default: () => true,
     },
 
     defaultMethod: {
+      // returns [1, 2, 3]
       default() {
         return [1, 2, 3];
       },
