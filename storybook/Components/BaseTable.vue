@@ -19,6 +19,17 @@
 
 /**
  * Base Table
+ *
+ * Создает таблицу по переданным колонкам и данным.
+ * Нужные данные в ячейки нужно рендерить самостоятельно,
+ * для этого есть слот `cell`, в который передается SlotScope.
+ *
+ * @example
+ * <BaseTable :columns="columns" :data="props">
+ *   <template slot="cell" slot-scope="{ column, dataItem }">
+ *      <!-- Рендерим нужный контент на основании column и dataItem -->
+ *   </template>
+ * </BaseTable>
  */
 export default {
   props: {

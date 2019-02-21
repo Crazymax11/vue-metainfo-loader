@@ -72,20 +72,17 @@ export default {
 <template>
   <BaseTable :columns="columns" :data="events">
     <template slot="cell" slot-scope="{ column, dataItem }">
-      <template v-if="column.id === 'name'">
-        <div class="name">
-          <span class="name-title">{{ dataItem.name }}</span>
-          <span class="name-description">{{ dataItem.description }}</span>
-        </div>
-      </template>
+      <div v-if="column.id === 'name'" class="name">
+        <span class="name__title">{{ dataItem.name }}</span>
+        <span class="name__description">{{ dataItem.description }}</span>
+      </div>
 
-      <template v-else-if="column.id === 'payload' && dataItem.payload">
-        <Type
-          class="type"
-          :type="dataItem.payload"
-          :custom-types="customTypes"
-        ></Type>
-      </template>
+      <Type
+        v-else-if="column.id === 'payload' && dataItem.payload"
+        class="type"
+        :type="dataItem.payload"
+        :custom-types="customTypes"
+      ></Type>
     </template>
   </BaseTable>
 </template>
@@ -94,11 +91,11 @@ export default {
 @import '../styles/common';
 
 .name {
-  &-title {
+  &__title {
     display: block;
     margin-bottom: 6px;
   }
-  &-description {
+  &__description {
     display: block;
     color: $color-gray50;
     font-size: 14px;

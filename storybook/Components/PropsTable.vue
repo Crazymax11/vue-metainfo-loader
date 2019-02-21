@@ -89,20 +89,17 @@ export default {
 <template>
   <BaseTable :columns="columns" :data="props">
     <template slot="cell" slot-scope="{ column, dataItem }">
-      <template v-if="column.id === 'name'">
-        <div class="name">
-          <span class="name-title">{{ dataItem.name }}</span>
-          <span class="name-description">{{ dataItem.description }}</span>
-        </div>
-      </template>
+      <div v-if="column.id === 'name'" class="name">
+        <span class="name__title">{{ dataItem.name }}</span>
+        <span class="name__description">{{ dataItem.description }}</span>
+      </div>
 
-      <template v-else-if="column.id === 'type'">
-        <Type
-          class="type"
-          :type="dataItem.type"
-          :custom-types="customTypes"
-        ></Type>
-      </template>
+      <Type
+        v-else-if="column.id === 'type'"
+        class="type"
+        :type="dataItem.type"
+        :custom-types="customTypes"
+      ></Type>
 
       <template v-else-if="column.id === 'default'">
         <span v-if="dataItem.required" class="required">Required</span>
@@ -135,11 +132,11 @@ export default {
 @import '../styles/common';
 
 .name {
-  &-title {
+  &__title {
     display: block;
     margin-bottom: 6px;
   }
-  &-description {
+  &__description {
     display: block;
     color: $color-gray50;
     font-size: 14px;
