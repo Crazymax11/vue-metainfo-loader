@@ -28,19 +28,36 @@ export default {
 
 <template>
   <div class="story">
-    Story
     <slot name="description">
-      <Description :description="meta.description" :name="meta.name" />
-    </slot>
-    <slot name="props">
-      <PropsTable
-        :props="meta.props"
-        :custom-types="meta.customTypes"
-        class="props-table"
+      <Description
+        :description="meta.description"
+        :name="meta.name"
+        class="story__description"
       />
     </slot>
-    <slot name="events"><EventsTable :events="meta.events" /></slot>
-    <slot />
+
+    <slot name="props">
+      <div class="story__props">
+        <h2 class="story__title">Props</h2>
+        <PropsTable
+          :props="meta.props"
+          :custom-types="meta.customTypes"
+          class="table"
+        />
+      </div>
+    </slot>
+
+    <slot name="events">
+      <div class="story__events">
+        <h2 class="story__title">Events</h2>
+        <EventsTable
+          :events="meta.events"
+          :custom-types="meta.customTypes"
+          class="table"
+        />
+      </div>
+    </slot>
+
     <slot name="example" />
   </div>
 </template>
@@ -49,8 +66,25 @@ export default {
 .story {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+
+  &__title {
+    margin-bottom: 10px;
+  }
+
+  &__description {
+    margin-bottom: 40px;
+  }
+
+  &__props {
+    margin-bottom: 40px;
+  }
+
+  &__events {
+    margin-bottom: 40px;
+  }
 }
-.props-table {
+
+.table {
   width: 100%;
 }
 </style>

@@ -1,5 +1,6 @@
 <script>
 import Type from './Type.vue';
+import BaseTable from './BaseTable.vue';
 
 /**
  * @typedef {{
@@ -32,6 +33,7 @@ import Type from './Type.vue';
 export default {
   components: {
     Type,
+    BaseTable,
   },
 
   props: {
@@ -58,113 +60,83 @@ export default {
       },
     },
   },
+
+  data() {
+    return {
+      columns: [
+        {
+          id: 'name',
+          title: 'Name',
+        },
+        {
+          id: 'type',
+          title: 'Type',
+        },
+        {
+          id: 'default',
+          title: 'Default',
+        },
+        {
+          id: 'validator',
+          title: 'Validator',
+        },
+      ],
+    };
+  },
 };
 </script>
 
 <template>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Validator</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="prop in props" :key="prop.name">
-        <td data-label="Name">
-          <div class="name">
-            <span class="name-title">{{ prop.name }}</span>
-            <span class="name-description">{{ prop.description }}</span>
-          </div>
-        </td>
+  <BaseTable :columns="columns" :data="props">
+    <template slot="cell" slot-scope="{ column, dataItem }">
+      <div v-if="column.id === 'name'" class="name">
+        <span class="name__title">{{ dataItem.name }}</span>
+        <span class="name__description">{{ dataItem.description }}</span>
+      </div>
 
-        <td data-label="Type">
-          <Type
-            class="type"
-            :type="prop.type"
-            :custom-types="customTypes"
-          ></Type>
-        </td>
+      <Type
+        v-else-if="column.id === 'type'"
+        class="type"
+        :type="dataItem.type"
+        :custom-types="customTypes"
+      ></Type>
 
-        <td data-label="Default">
-          <span v-if="prop.required" class="required">Required</span>
-          <span v-else-if="prop.default" class="default">
-            <span v-if="prop.default.description" class="default-description">
-              {{ prop.default.description }}
-            </span>
-            <code class="code">
-              <pre>{{ prop.default.value }}</pre>
-            </code>
+      <template v-else-if="column.id === 'default'">
+        <span v-if="dataItem.required" class="required">Required</span>
+        <span v-else-if="dataItem.default" class="default">
+          <span v-if="dataItem.default.description" class="default-description">
+            {{ dataItem.default.description }}
           </span>
-        </td>
+          <code class="code">
+            <pre>{{ dataItem.default.value }}</pre>
+          </code>
+        </span>
+      </template>
 
-        <td data-label="Validator">
-          <template v-if="prop.validator">
-            <span
-              v-if="prop.validator.description"
-              class="validator-description"
-            >
-              {{ prop.validator.description }}
-            </span>
-            <code class="code">
-              <pre>{{ prop.validator.value }}</pre>
-            </code>
-          </template>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <template v-else-if="column.id === 'validator' && dataItem.validator">
+        <span
+          v-if="dataItem.validator.description"
+          class="validator-description"
+        >
+          {{ dataItem.validator.description }}
+        </span>
+        <code class="code">
+          <pre>{{ dataItem.validator.value }}</pre>
+        </code>
+      </template>
+    </template>
+  </BaseTable>
 </template>
 
 <style lang="scss" scoped>
 @import '../styles/common';
 
-.table {
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
-  table-layout: fixed;
-  font-size: 16px;
-
-  td,
-  th {
-    padding: 12px;
-    border-bottom: 1px solid $color-gray90;
-    vertical-align: top;
-    text-align: left;
-    transition: background-color 0.2s;
-  }
-
-  thead {
-    text-align: left;
-
-    td,
-    th {
-      padding-top: 18px;
-      padding-bottom: 18px;
-      font-weight: bold;
-      font-size: 14px;
-      color: $color-gray50;
-    }
-  }
-
-  tbody {
-    tr:hover {
-      td {
-        background-color: $color-gray98;
-      }
-    }
-  }
-}
-
 .name {
-  &-title {
+  &__title {
     display: block;
     margin-bottom: 6px;
   }
-  &-description {
+  &__description {
     display: block;
     color: $color-gray50;
     font-size: 14px;
